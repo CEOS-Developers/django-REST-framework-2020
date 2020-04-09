@@ -1,2 +1,4 @@
 .idea/
 /venv/
+/api_server/secrets.json
+__pycache__
