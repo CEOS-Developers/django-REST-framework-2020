@@ -1,3 +1,1 @@
-from django.shortcuts import render
-
-# Create your views here.
+# API 구현하기
