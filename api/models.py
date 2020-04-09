@@ -22,8 +22,8 @@ class Branch(models.Model):
 
 class Theater(models.Model):
     theater_no = models.CharField(max_length=10, primary_key=True)
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
     total_seat = models.IntegerField()
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.theater_no
@@ -31,9 +31,9 @@ class Theater(models.Model):
 
 class Seat(models.Model):
     seat_no = models.IntegerField(primary_key=True)
-    theater = models.ForeignKey('Theater', on_delete=models.CASCADE)
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
     is_reservation = models.BooleanField(default=False)
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
+    theater = models.ForeignKey('Theater', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.seat_no
@@ -48,11 +48,11 @@ class Movie(models.Model):
 
 
 class Schedule(models.Model):
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
-    theater = models.ForeignKey('Theater', on_delete=models.CASCADE)
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
     schedule_date = models.DateField()
     schedule_time = models.TimeField()
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
+    theater = models.ForeignKey('Theater', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.id
@@ -70,7 +70,6 @@ class ReservationTicket(models.Model):
 
 
 class Pay(models.Model):
-    reservation = models.ForeignKey('ReservationTicket', on_delete=models.CASCADE)
     member = models.OneToOneField(
         'Member',
         on_delete=models.CASCADE
@@ -78,7 +77,7 @@ class Pay(models.Model):
     payment_date = models.DateField()
     price = models.IntegerField()
     payment_option = models.CharField(max_length=20)
+    reservation = models.ForeignKey('ReservationTicket', on_delete=models.CASCADE)
 
     def __str__(self):
         self.id
-
