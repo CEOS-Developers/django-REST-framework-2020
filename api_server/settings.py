@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
 ]
 
+INSTALLED_APPS += [
+    'movies',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
