@@ -18,4 +18,13 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
 shell에서 작성한 코드와 그 결과를 보여주세요! 
 
 ### 간단한 회고 
-과제 시 어려웠던 점이나 느낀 점, 좋았던 점 등을 간단히 적어주세요!
+1. migratoins
+-모델의 변경내역을 DB Schema로 반영시키는 효율적인 방법을 제공   
+-makemigrations: 마이그레이션파일 생성   
+-migrate: 마이그레이션 적용
+2. mysqlclient install 안될때 -> pip 버전 업그레이드   
+-이거때문에 너무 고생함 ㅜㅜ
+3. mysql 8.0버전은 migrate오류난다 ..   
+-ALTER USER 'yeon'@'%' IDENTIFIED WITH mysql_native_password BY '비번';   
+-use mysql로 들어가서 바꿔줘야함    
+-이거 성공하고 mysql에 내가 만든 테이블 떴을때 너무 행복했다 ..
