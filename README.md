@@ -17,7 +17,9 @@
 
 마지막으로, 영화 티켓 결제를 하고 예약번호가 적힌 티켓(QR 코드 등)을 받습니다.
 
+
 ### 모델 설명
+
 총 7개의 서비스 관련 모델과 1개의 유저 모델로 이루어져 있습니다.
 
 **서비스 관련 모델**에는 movie, branch, theater, seat, schedule reservation(ticket), pay 이 있습니다.
@@ -78,12 +80,24 @@
 
 **참고 사진**
 
-![models] (./image/modeling.jpg)
+![models](./image/modeling.jpg)
+
+
 
 ### ORM 적용해보기
-1. ![create] (./image/1.JPG)
-2. ![Queryset] (./image/2.JPG)
-3. ![filter] (./image/3.JPG) 
+1. 데이터베이스에 해당 모델 객체 3개 넣기 
+
+![create](./image/1.JPG)
+
+2. 삽입한 객체들을 쿼리셋으로 조회해보기 (단, 객체들이 객체의 특성을 나타내는 구분가능한 이름으로 보여야 함)
+
+![Queryset](./image/2.JPG)
+
+3. filter 함수 사용해보기
+
+![filter](./image/3.JPG) 
+
+
 
 ### 간단한 회고 
 
