@@ -17,3 +17,8 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.Manufacturer)
+class ManufacturerAdmin(admin.ModelAdmin):
+    pass
