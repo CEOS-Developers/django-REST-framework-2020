@@ -33,6 +33,14 @@ class Movie(models.Model):
         return self.title
 
 
+class TimeTable(models.Model):
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='timetable')
+    time = models.DateTimeField()
+
+    def __str__(self):
+        return "%s - %s" % (self.movie.title, self.time)
+
+
 class Review(models.Model):
     RATE_CHOICES = (            # 별모양 5개에서 채우는 걸로 하고 싶은데, 나중에 view 에서 구현 해야할듯
         (1, 'worst'),
@@ -50,10 +58,11 @@ class Review(models.Model):
         return "%s - %s : %s점" % (self.movie.title, self.user.username, self.rate)
 
 
-class Ticketing(models.Model):
-    user = models.ForeignKey('User', on_Delete=models.CASCADE, related_name='reserve')
+class Booking(models.Model):
+    user = models.ForeignKey('User', on_Delete=models.CASCADE, related_name='ticket')
     movie = models.ForeignKey('Movie', in_delete=models.CASCADE, related_name='reserved')
-    date = models.DateTimeField(auto_now_add=True)
+    movie_time = models.ForeignKey('TimeTable', on_delete=models.CASCADE, related_name='ticket')
+    booking_time = models.DateTimeField(auto_now_add=True)
     num = models.IntegerField()
 
     def __str__(self):
