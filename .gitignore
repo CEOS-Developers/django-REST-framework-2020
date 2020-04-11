@@ -1,3 +1,6 @@
 .idea/
 /venv/
 /api_server/secrets.json
+/api_server/__pycache__/
+/api/__pycache__/
+/api_server/migrations/__pycache__/
