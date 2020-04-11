@@ -59,11 +59,16 @@ class Review(models.Model):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey('User', on_Delete=models.CASCADE, related_name='ticket')
-    movie = models.ForeignKey('Movie', in_delete=models.CASCADE, related_name='reserved')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='ticket')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reserved')
     movie_time = models.ForeignKey('TimeTable', on_delete=models.CASCADE, related_name='ticket')
     booking_time = models.DateTimeField(auto_now_add=True)
     num = models.IntegerField()
 
     def __str__(self):
         return "Name: %s, %s %d명" % (self.user.username, self.movie.title, self.num)
+
+
+class WishList(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='wish_list')
+    movie = models.OneToOneField('Movie', on_delete=models.CASCADE, related_name='wish_list_of')
