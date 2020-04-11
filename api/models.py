@@ -2,35 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-class Movie(models.Model):
-    title = models.CharField(max_length=64)
-    director = models.CharField(max_length=64)
-    genre = models.CharField(max_length=32)
-    country = models.CharField(max_length=32)
-    rel_day = models.DateTimeField(verbose_name='release_day')
-    poster = models.ImageField(blank=True, null=True, upload_to='user')
-
-    def __str__(self):
-        return self.title
-
-
-class Review(models.Model):
-    RATE_CHOICES = (
-        (1, 'worst'),
-        (2, 'bad'),
-        (3, 'just'),
-        (4, 'good'),
-        (5, 'best'),
-    )
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='users')
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='movies')
-    rate = models.SmallIntegerField(choices=RATE_CHOICES)
-    comment = models.CharField(max_length=255)
-
-    def __str__(self):
-        return "<%s %s>" % (self.user.username, self.rate)
-
-
 class User(AbstractUser):
     GENDER_CHOICES = (
         (0, 'Male'),
@@ -44,7 +15,46 @@ class User(AbstractUser):
     phone = models.CharField(max_length=11)
 
     USERNAME_FIELD = 'email'    # 로그인을 이메일로 하기 위해
-    REQUIRED_FIELDS = []        # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email필드가 들어가지만
+    REQUIRED_FIELDS = []        # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
 
     def __str__(self):
-        return "<%d %s>" % (self.pk, self.email)
+        return "%d. %s" % (self.pk, self.username)
+
+
+class Movie(models.Model):
+    title = models.CharField(max_length=64)
+    director = models.CharField(max_length=64)
+    genre = models.CharField(max_length=32)
+    country = models.CharField(max_length=32)
+    rel_day = models.DateTimeField(verbose_name='release_day')
+    poster = models.ImageField(blank=True, null=True, upload_to='')
+
+    def __str__(self):
+        return self.title
+
+
+class Review(models.Model):
+    RATE_CHOICES = (            # 별모양 5개에서 채우는 걸로 하고 싶은데, 나중에 view 에서 구현 해야할듯
+        (1, 'worst'),
+        (2, 'bad'),
+        (3, 'just'),
+        (4, 'good'),
+        (5, 'best'),
+    )
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reviews')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reviews')
+    rate = models.SmallIntegerField(choices=RATE_CHOICES)
+    comment = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "%s - %s : %s점" % (self.movie.title, self.user.username, self.rate)
+
+
+class Ticketing(models.Model):
+    user = models.ForeignKey('User', on_Delete=models.CASCADE, related_name='reserve')
+    movie = models.ForeignKey('Movie', in_delete=models.CASCADE, related_name='reserved')
+    date = models.DateTimeField(auto_now_add=True)
+    num = models.IntegerField()
+
+    def __str__(self):
+        return "Name: %s, %s %d명" % (self.user.username, self.movie.title, self.num)
