@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+INSTALLED_APPS += [
     'api.apps.ApiConfig',
 ]
 
@@ -83,6 +86,7 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 # DB 세팅을 위해 수정해야 할 부분 (default가 sqlite3)
 DATABASES = secrets['DB_SETTINGS']
 
+AUTH_USER_MODEL = 'api.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -1,10 +1,5 @@
 from django.db import models
-
-
-# [제약조건]
-# 1. 1:1과 1:n의 관계 포함
-# 2. 각 모델에 필드 최소 3개 이상 포함
-# 3. 서비스 관련 모델 3개 이상 + 유저 모델 1개 구현 (단, 유저는 필수 아님)
+from django.contrib.auth.models import AbstractUser
 
 
 class Movie(models.Model):
@@ -12,18 +7,44 @@ class Movie(models.Model):
     director = models.CharField(max_length=64)
     genre = models.CharField(max_length=32)
     country = models.CharField(max_length=32)
-    rel_day = models.DateTimeField(blank=True, null=True, verbose_name='개봉날짜')
-    poster = models.ImageField()
+    rel_day = models.DateTimeField(verbose_name='release_day')
+    poster = models.ImageField(blank=True, null=True, upload_to='user')
 
     def __str__(self):
         return self.title
 
 
 class Review(models.Model):
-    # User model 구현후 추가 예정
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    rate = models.IntegerField()    # User model 사용 예정 -> 평점 함수 구현
-    comment = models.CharField(max_length=255)    # User model 사용 예정
+    RATE_CHOICES = (
+        (1, 'worst'),
+        (2, 'bad'),
+        (3, 'just'),
+        (4, 'good'),
+        (5, 'best'),
+    )
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='users')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='movies')
+    rate = models.SmallIntegerField(choices=RATE_CHOICES)
+    comment = models.CharField(max_length=255)
 
     def __str__(self):
-        return str(self.movie) + ' ' + str(self.rate)   # 임시 형태
+        return "<%s %s>" % (self.user.username, self.rate)
+
+
+class User(AbstractUser):
+    GENDER_CHOICES = (
+        (0, 'Male'),
+        (1, 'Female'),
+        (2, 'Not to disclose')
+    )
+
+    email = models.EmailField(verbose_name='email', max_length=255, unique=True)
+    username = models.CharField(max_length=30)
+    gender = models.SmallIntegerField(choices=GENDER_CHOICES)
+    phone = models.CharField(max_length=11)
+
+    USERNAME_FIELD = 'email'    # 로그인을 이메일로 하기 위해
+    REQUIRED_FIELDS = []        # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email필드가 들어가지만
+
+    def __str__(self):
+        return "<%d %s>" % (self.pk, self.email)
