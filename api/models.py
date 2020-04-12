@@ -11,7 +11,7 @@ class Major(models.Model):
 
 class Student(models.Model):
     std_id = models.IntegerField(default=0, primary_key=True)
-    std_major = models.OneToOneField(Major, on_delete=models.CASCADE)
+    std_major = models.ForeignKey(Major, on_delete=models.CASCADE)
     grade = models.IntegerField(default=1)
     credits_available = models.IntegerField(default=18)
 
