@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # from django.utils.translation import ugettext_lazy as _   # 다국어 사이트를 위한 맞춤번역 (Form 과 admin) 나중에 적용
 from django.utils import timezone
-# from datetime import datetime
+# from datetime import datetime   # timezone 으로 통일
 # from django.db.models.signals import post_save   # 오류 발생하여 사용하지 않음
 # from django.dispatch import receiver   # 오류 발생하여 사용하지 않음
 
@@ -39,7 +39,7 @@ class MyUser(models.Model):
     class Meta:
         verbose_name = '유저'   # 모델 자체 이름
         # verbose_name 이 정의되어 있는 상태에서 verbose_name_plural 이 정의되지 않았으면, 자동으로 뒤에 s 하나를 붙여준다.
-        verbose_name_plural = '유저들'   # 복수형
+        verbose_name_plural = '유저'   # 복수형
         ordering = ('-date_joined',)   # 최신 가입순
 
     def __str__(self):
@@ -64,7 +64,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name = '상품'
-        verbose_name_plural = '상품들'
+        verbose_name_plural = '상품'
         ordering = ('-supply_date',)   # 최신 공급순
 
     def __str__(self):
@@ -96,7 +96,7 @@ class Order(models.Model):
             ('user_id', 'pro_num')
         )
         verbose_name = '주문'
-        verbose_name_plural = '주문들'
+        verbose_name_plural = '주문'
         ordering = ('-date_ordered',)  # 최신 주문순
 
 
@@ -109,7 +109,7 @@ class Manufacturer(models.Model):
 
     class Meta:
         verbose_name = '제조업체'
-        verbose_name_plural = '제조업체들'
+        verbose_name_plural = '제조업체'
         ordering = ('-manu_num',)   # 최신 등록순
 
     def __str__(self):
@@ -136,7 +136,7 @@ class Delivery(models.Model):
 
     class Meta:
         verbose_name = '배송'
-        verbose_name_plural = '배송들'
+        verbose_name_plural = '배송'
         ordering = ('-transport',)   # 최신 운송장번호순
 
     def __str__(self):
@@ -155,8 +155,9 @@ class Review(models.Model):
 
     class Meta:
         verbose_name = '리뷰'
-        verbose_name_plural = '리뷰들'
+        verbose_name_plural = '리뷰'
         ordering = ('-review_num',)   # 최신 리뷰순
 
     def __str__(self):
         return self.title
+
