@@ -4,6 +4,7 @@ import os
 import sys
 
 
+
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api_server.settings')
     try:

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # [제약조건]
 # 1. 1:1과 1:n의 관계 포함
 # 2. 각 모델에 필드 최소 3개 이상 포함
@@ -9,8 +10,8 @@ from django.db import models
 # 하나의 영화관(db : movies)에서 상영되는 영화, 누적관객 수, 상영날짜 등으로 모델링
 
 class Movie(models.Model):
-    title = models.TextField(primary_key=True)
-    director = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, primary_key=True)
+    director = models.CharField(max_length=100)
     release_year = models.IntegerField()
     running_time = models.IntegerField()  # minutes 단위
     country = models.CharField(max_length=100)
@@ -29,26 +30,29 @@ class ScreeningDates(models.Model):  # 시기별 누적 관객수
     def __str__(self):
         return self.title
 
-class GenreStat(models.Model): # 영화 장르별 통계
-    genre = models.ForeignKey('Movie', on_delete=models.SET_NULL)
-    genre_count =  models.IntegerField()
+
+class GenreStat(models.Model):  # 영화 장르별 통계
+    genre = models.ForeignKey('Movie', on_delete=models.CASCADE)
+    genre_count = models.IntegerField()
 
     def __str__(self):
         return self.genre
 
-class CountryStat(models.Model): #영화 국가별 통계
-    country = models.ForeignKey('Movie', on_delete=models.SET_NULL)
+
+class CountryStat(models.Model):  # 영화 국가별 통계
+    country = models.ForeignKey('Movie', on_delete=models.CASCADE)
     country_count = models.IntegerField()
 
     def __str__(self):
         return self.country
 
-class Workers(models.Model):  # 영화관 직원
+
+class Workers(models.Model):  # 영화관 직원 관리
     name = models.CharField(max_length=100)
     birth = models.DateTimeField()
     age = models.IntegerField()
     gender = models.CharField(max_length=100)
-    position = models.CharField(max_length=200, null=True)
+    position = models.CharField(max_length=200, null=True)  # counter, cleaning, food, ticketcheck
 
     def __str__(self):
         return self.name
