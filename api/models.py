@@ -48,7 +48,7 @@ class MyUser(models.Model):
 
 class Product(models.Model):
     pro_num = models.AutoField('상품번호 PK', primary_key=True)   # PK 별도로 지정
-    name = models.CharField('상품명', max_length=100)
+    pro_name = models.CharField('상품명', max_length=100)
     inventory = models.IntegerField('재고량')
     price = models.IntegerField('단가')
 
@@ -63,12 +63,12 @@ class Product(models.Model):
     supply_vol = models.IntegerField('공급량')
 
     class Meta:
-        verbose_name = '제품'
-        verbose_name_plural = '제품들'
+        verbose_name = '상품'
+        verbose_name_plural = '상품들'
         ordering = ('-supply_date',)   # 최신 공급순
 
     def __str__(self):
-        return self.pro_num
+        return self.pro_name
 
 
 # MyUser 와 Product 의 중개 모델(intermediate model)
@@ -113,4 +113,31 @@ class Manufacturer(models.Model):
         ordering = ('-manu_num',)   # 최신 등록순
 
     def __str__(self):
-        return self.manu_num
+        return self.manu_name
+
+
+class Delivery(models.Model):
+    delivery_num = models.AutoField('배송번호 PK', primary_key=True)   # PK 별도로 지정
+    '''
+    Order 테이블을 참조하기 위해선 Order 의 PK 를 가져오면 된다.
+    Order 의 PK 는 두 개의 복합키(user_id, pro_num)로 이루어져 있는데, 가져오는 방식은 아래처럼 단순하다. 
+    '''
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, verbose_name='주문식별')
+
+    date_delivered = models.DateTimeField('배송일자', default=timezone.now)
+    transport = models.IntegerField('운송장번호')
+    STATE = (
+        ('preparing', '상품준비중'),
+        ('departure', '배송출발'),
+        ('in_progress', '배송중'),
+        ('completed', '배송완료'),
+    )
+    state = models.CharField('배송상태', max_length=20, choices=STATE, default='preparing')
+
+    class Meta:
+        verbose_name = '배송'
+        verbose_name_plural = '배송들'
+        ordering = ('-transport',)   # 최신 운송장번호순
+
+    def __str__(self):
+        return self.delivery_num
