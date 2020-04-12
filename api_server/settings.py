@@ -23,7 +23,7 @@ with open(os.path.join(BASE_DIR, 'secrets.json'), 'rb') as secret_file:
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets['SECRET_KEY']
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,7 +31,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'api.User'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,7 +79,7 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 
 # DB 세팅을 위해 수정해야 할 부분 (default가 sqlite3)
 DATABASES = secrets['DB_SETTINGS']
-
+SECRET_KEY = secrets['SECRET_KEY']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

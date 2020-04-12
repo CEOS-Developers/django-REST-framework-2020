@@ -75,7 +75,7 @@ class Movie(models.Model):
     genre = models.CharField(max_length=20)
 
     def __str__(self):
-        self.id
+        return self.id
 
 
 class Schedule(models.Model):
@@ -98,7 +98,7 @@ class Seat(models.Model):
 
     @property
     def is_reserved(self, time):
-        schedule = Schedule.objects.filter(time=time, movie=self.movie, branch=self.branch,screen=self.screen)
+        schedule = Schedule.objects.filter(time=time, movie=self.movie, branch=self.branch, screen=self.screen)
         return schedule.reservation_ticket_set.filter(seat=self).exists()
 
 
