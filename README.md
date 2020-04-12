@@ -43,13 +43,13 @@ Course - Basket -> 1:N
 Course - Timetable -> 1:N
 ### ORM 적용해보기
 1. 데이터베이스에 모델 객체 3개 넣기   
-![1-1] (./image/1-1.png)   
-![1-2] (./image/1-2.png)   
-![1-3] (./image/1-3.png)     
+![1-1] (./image/1-1.PNG)   
+![1-2] (./image/1-2.PNG)   
+![1-3] (./image/1-3.PNG)     
 2. 쿼리셋으로 조회해보기   
-![2] (./image/2.png)    
+![2] (./image/2.PNG)    
 3. filter 함수 사용해보기    
-![filter] (./image/3.png)
+![filter] (./image/3.PNG)
 
 
 ### 간단한 회고 
