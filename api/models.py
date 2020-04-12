@@ -141,3 +141,22 @@ class Delivery(models.Model):
 
     def __str__(self):
         return self.delivery_num
+
+
+class Review(models.Model):
+    review_num = models.AutoField('글번호 PK', primary_key=True)   # PK 별도로 지정
+    # Order 테이블의 복합기본키(user_id, pro_num)를 가져온다.
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, verbose_name='주문식별')
+    title = models.CharField('글제목', max_length=100)
+    # ImageField 사용시 필수인 이미지처리 라이브러리 pillow 를 설치한다
+    image = models.ImageField('글사진', blank=True)   # 썸네일 생성 생략
+    content = models.TextField('글내용')
+    pub_date = models.DateTimeField('작성일자', default=timezone.now)
+
+    class Meta:
+        verbose_name = '리뷰'
+        verbose_name_plural = '리뷰들'
+        ordering = ('-review_num',)   # 최신 리뷰순
+
+    def __str__(self):
+        return self.title

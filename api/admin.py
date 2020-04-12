@@ -27,3 +27,8 @@ class ManufacturerAdmin(admin.ModelAdmin):
 @admin.register(models.Delivery)
 class DeliveryAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.Review)
+class ReviewAdmin(admin.ModelAdmin):
+    pass
