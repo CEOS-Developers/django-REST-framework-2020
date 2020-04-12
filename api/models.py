@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 # from django.utils.translation import ugettext_lazy as _   # 다국어 사이트를 위한 맞춤번역 (Form 과 admin) 나중에 적용
@@ -31,6 +32,7 @@ class MyUser(models.Model):
     # Product 클래스 생성 전이므로 클래스 명 'Product'로 관계 설정
     pro_num = models.ManyToManyField(
         'Product',
+        # related_name='myusers',
         through='Order',
         through_fields=('user_id', 'pro_num'),
         verbose_name='구매한 상품',
@@ -59,7 +61,7 @@ class Product(models.Model):
         max_length=50,
         verbose_name='제조업체번호',
     )
-    supply_date = models.DateTimeField('공급일자')
+    supply_date = models.DateField('공급일자')
     supply_vol = models.IntegerField('공급량')
 
     class Meta:
@@ -68,14 +70,14 @@ class Product(models.Model):
         ordering = ('-supply_date',)   # 최신 공급순
 
     def __str__(self):
-        return self.pro_name
+        return self.pro_num
 
 
 # MyUser 와 Product 의 중개 모델(intermediate model)
 class Order(models.Model):
     # PK 는 Meta 클래스를 참고
     user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, verbose_name='유저 id')
-    pro_num = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='상품번호')
+    pro_num = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='상품이름')
     many = models.IntegerField('주문수량')
     '''
     # Order 의 destination 은 원래 MyUser 의 location 정보를 참조하려 하였으나 참조 무결성 제약조건에 어긋남
@@ -113,7 +115,7 @@ class Manufacturer(models.Model):
         ordering = ('-manu_num',)   # 최신 등록순
 
     def __str__(self):
-        return self.manu_name
+        return self.manu_num
 
 
 class Delivery(models.Model):
@@ -160,4 +162,3 @@ class Review(models.Model):
 
     def __str__(self):
         return self.title
-
