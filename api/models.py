@@ -7,7 +7,7 @@ from django.db import models
 # 3. 서비스 관련 모델 3개 이상 + 유저 모델 1개 구현 (단, 유저는 필수 아님)
 
 
-# 하나의 영화관(db : movies)에서 상영되는 영화, 누적관객 수, 상영날짜 등으로 모델링
+# 하나의 영화관(db : megabox)에서 상영되는 영화, 누적관객 수, 상영날짜 등으로 모델링
 
 class Movie(models.Model):
     title = models.CharField(max_length=200, primary_key=True)
@@ -16,6 +16,9 @@ class Movie(models.Model):
     running_time = models.IntegerField()  # minutes 단위
     country = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
+
+    def givetitle(self):
+        return self.title
 
     def __str__(self):
         return self.title
@@ -28,7 +31,7 @@ class ScreeningDates(models.Model):  # 시기별 누적 관객수
     total_audience = models.IntegerField()
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 
 class GenreStat(models.Model):  # 영화 장르별 통계
@@ -36,7 +39,7 @@ class GenreStat(models.Model):  # 영화 장르별 통계
     genre_count = models.IntegerField()
 
     def __str__(self):
-        return self.genre
+        return str(self.genre)
 
 
 class CountryStat(models.Model):  # 영화 국가별 통계
@@ -44,7 +47,7 @@ class CountryStat(models.Model):  # 영화 국가별 통계
     country_count = models.IntegerField()
 
     def __str__(self):
-        return self.country
+        return str(self.country)
 
 
 class Workers(models.Model):  # 영화관 직원 관리
