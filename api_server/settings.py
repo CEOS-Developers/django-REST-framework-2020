@@ -118,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = True      # True: 장고 내부적으로 시간대를 인식, False: TIME_ZONE을 참고하여 local time 사용
 
 
 # Static files (CSS, JavaScript, Images)
