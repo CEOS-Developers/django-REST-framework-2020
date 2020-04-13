@@ -1,5 +1,13 @@
 # django REST framework 과제 (for ceos 11th)
 
+## 유의사항
+* 본 레포지토리는 백엔드 스터디 2-3주차의 과제를 위한 레포입니다.
+* 따라서 해당 레포를 fork 및 clone 후 local에서 본인의 깃헙 ID 브랜치로 작업한 후 커밋/푸시하고,
+PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다.
+ 
+## 2주차 과제 + 리뷰반영
+[과제 안내](https://www.notion.so/3-Django-ORM-c531472b37e844a6a6d484553037c243)
+
 ### 서비스 설명
 
 영화관 선택은 배제하고, 영화 예매, 리뷰 서비스를 모델링 해보았습니다.
@@ -8,52 +16,53 @@
   -> 영화 선택후 관란 시간표에서 시간을 선택 -> 영화 관람한 회원만 (권한을 주어) 리뷰 작성 가능
 - 보고싶은 영화를 WishList 를 만들어 관리
 
-### 모델 설명
+### 모델 설명 
 
 가장 기본이 되는 모델로는 User, Movie, Booking 3가지로 잡았고,
 하위 모델로는 TimeTable, Review, WishList 가 있습니다.
 
 1. User : AbstractUser 사용하여 필드 변경
-
    - email: EmailField
    - username: CharField
    - gender: SmallIntegerField(choices=GENDER_CHOICES)
-   - phone
+   - phone: PhoneNumberField - `pip install django-phonenumber-field[phonenumbers]`
+   - wish_list: (Movie : user) (M : N) - 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
 
    -> 로그인을 이메일로
 
 2. Movie
-
    - title: CharField
-   - director: CharField
-   - genre: CharField
    - country: CharField
    - rel_day: DateTimeField
+   - is_on_now: BooleanField
    - poster: ImageField
 
-3. TimeTable
+3. Genre
+   - Genre - Movie (N : 1)
+   - name: CharField(choices=GENRE_CHOICES) - 표준화된 장르 19개 + indeterminate 1개
 
-   - TimeTable - Movie (N : 1)
-   - time = models.DateTimeField
+4. Director
+    - Director - Movie (M : N) - 영화에 감독이 여러명일 수도 있고, 감독이 여러 영화를 만들 수 도 있음
+    - name: CharField
 
-4. Review
+5. TimeTable
+    - TimeTable - Movie (N : 1)
+    - start_time: DateTimeField
+    - end_time: DateTimeField
 
-   - Review - User (N : 1)
-   - Review - movie (N : 1)
-   - rate: SmallIntegerField(choices=RATE_CHOICES) - 별점 1~5개중 choice
-   - comment: CharField : 너무 길지않은 코멘트
+6. Review
+    - Review - User (N : 1)
+    - Review - movie (N : 1)
+    - rate: SmallIntegerField - 별점 1~5개중 choice
+    - comment: CharField : 너무 길지않은 코멘트
 
-5. Booking
+7. Booking
+    - Booking - user (N : 1)
+    - Booking - movie (N : 1)
+    - movie_time: (Booking - TimeTable) (N : 1) - 예약한 영화 시간
+    - booking_time: DateTimeField - 예약을 행한 그 시간
+    - num_people: IntegerField
 
-   - Booking - user (N : 1)
-   - Booking - movie (N : 1)
-   - Booking - TimeTable (N : 1) - 예약한 영화 시간
-   - booking_time = DateTimeField - 예약을 행한 그 시간
-   - num = IntegerField
-
-6. WishList
-   - WishList - user (N : 1)
-   - WishList - movie (1 : 1) - WishList 에 같은영화는 한번밖에 들어가지 못함
 
 ### ORM 적용해보기
 1. Movie 객체 생성
