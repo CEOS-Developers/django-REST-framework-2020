@@ -25,13 +25,17 @@ class User(AbstractUser):
 
 class Movie(models.Model):
     title = models.CharField(max_length=64)
-    country = models.CharField(max_length=32)       # Movie 의 country 는 하나 - 라이브러리 깔아서 해야 하나...?
+    country = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='movies')
     rel_day = models.DateField(verbose_name='release_day')
     is_on_now = models.BooleanField(default=False)
     poster = models.ImageField(blank=True, null=True, upload_to='')
 
     def __str__(self):
         return self.title
+
+
+class Country(models.Model):        # Movie 제작 국가는 하나, 한 국가에는 여러 영화가 있음
+    name = models.CharField(max_length=32)
 
 
 class Genre(models.Model):
@@ -58,7 +62,7 @@ class Genre(models.Model):
         ('ID', 'indeterminate')
     )
 
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
     name = models.CharField(choices=GENRE_CHOICES, max_length=15)
 
 
@@ -78,9 +82,16 @@ class TimeTable(models.Model):
 
 
 class Review(models.Model):
+    RATE_CHOICES = (
+        (1, 'worst'),
+        (2, 'bad'),
+        (3, 'just'),
+        (4, 'good'),
+        (5, 'best'),
+    )
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reviews')
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reviews')
-    rate = models.SmallIntegerField()
+    rate = models.SmallIntegerField(choices=RATE_CHOICES)
     comment = models.CharField(max_length=255)
 
     def __str__(self):

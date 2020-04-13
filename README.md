@@ -5,7 +5,7 @@
 * 따라서 해당 레포를 fork 및 clone 후 local에서 본인의 깃헙 ID 브랜치로 작업한 후 커밋/푸시하고,
 PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다.
  
-## 2주차 과제 + 리뷰반영
+## 2주차 과제 + 리뷰 반영
 [과제 안내](https://www.notion.so/3-Django-ORM-c531472b37e844a6a6d484553037c243)
 
 ### 서비스 설명
@@ -32,10 +32,13 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
 
 2. Movie
    - title: CharField
-   - country: CharField
+   - Movie - Country (N : 1)
    - rel_day: DateTimeField
    - is_on_now: BooleanField
    - poster: ImageField
+
+3. Country
+    - name: CharField
 
 3. Genre
    - Genre - Movie (N : 1)
