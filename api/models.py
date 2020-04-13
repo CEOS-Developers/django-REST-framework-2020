@@ -14,7 +14,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=30)
     gender = models.SmallIntegerField(choices=GENDER_CHOICES)
     phone = PhoneNumberField(null=False, blank=False, unique=True)
-    wish_list = models.ManyToManyField('Movie', related_name='wished_bys')  # 하나의 유저가 여래 영화에 대해, 하나의 영화를 여러 유저가 사용
+    wish_list = models.ManyToManyField('Movie', related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
 
     USERNAME_FIELD = 'email'  # 로그인을 이메일로 하기 위해
     REQUIRED_FIELDS = []  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
@@ -59,7 +59,7 @@ class Genre(models.Model):
     )
 
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
-    genre = models.CharField(choices=GENRE_CHOICES, max_length=15)
+    name = models.CharField(choices=GENRE_CHOICES, max_length=15)
 
 
 class Director(models.Model):
