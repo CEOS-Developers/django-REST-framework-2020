@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField  # PhoneNumber library 설치.
 
 
 class User(AbstractUser):
@@ -12,10 +13,11 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     username = models.CharField(max_length=30)
     gender = models.SmallIntegerField(choices=GENDER_CHOICES)
-    phone = models.CharField(max_length=11)
+    phone = PhoneNumberField(null=False, blank=False, unique=True)
+    wish_list = models.ManyToManyField('Movie', related_name='wished_bys')  # 하나의 유저가 여래 영화에 대해, 하나의 영화를 여러 유저가 사용
 
-    USERNAME_FIELD = 'email'    # 로그인을 이메일로 하기 위해
-    REQUIRED_FIELDS = []        # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
+    USERNAME_FIELD = 'email'  # 로그인을 이메일로 하기 위해
+    REQUIRED_FIELDS = []  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
 
     def __str__(self):
         return "%d. %s" % (self.pk, self.username)
@@ -23,35 +25,62 @@ class User(AbstractUser):
 
 class Movie(models.Model):
     title = models.CharField(max_length=64)
-    director = models.CharField(max_length=64)
-    genre = models.CharField(max_length=32)
-    country = models.CharField(max_length=32)
-    rel_day = models.DateTimeField(verbose_name='release_day')
+    country = models.CharField(max_length=32)       # Movie 의 country 는 하나 - 라이브러리 깔아서 해야 하나...?
+    rel_day = models.DateField(verbose_name='release_day')
+    is_on_now = models.BooleanField(default=False)
     poster = models.ImageField(blank=True, null=True, upload_to='')
 
     def __str__(self):
         return self.title
 
 
+class Genre(models.Model):
+    GENRE_CHOICES = (
+        ('DR', 'Drama'),
+        ('CM', 'Comedy'),
+        ('Th', 'Thriller'),
+        ('RM', 'Romance'),
+        ('AC', 'Action'),
+        ('HR', 'Horror'),
+        ('CR', 'Crime'),
+        ('AV', 'Adventure'),
+        ('MS', 'Mystery'),
+        ('FM', 'Family'),
+        ('FT', 'Fantasy'),
+        ('SF', 'Sci-Fi'),
+        ('MU', 'Music'),
+        ('AM', 'Animation'),
+        ('BO', 'Biography'),
+        ('HS', 'History'),
+        ('MS', 'Musical'),
+        ('WR', 'War'),
+        ('SP', 'Sport'),
+        ('ID', 'indeterminate')
+    )
+
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
+    genre = models.CharField(choices=GENRE_CHOICES, max_length=15)
+
+
+class Director(models.Model):
+    # 영화에 감독이 여러명일 수도 있고, 감독이 여러 영화를 만들 수 도 있음
+    movie = models.ManyToManyField('Movie', related_name='directors')
+    name = models.CharField(max_length=30)
+
+
 class TimeTable(models.Model):
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='timetable')
-    time = models.DateTimeField()
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='timetables')
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     def __str__(self):
-        return "%s - %s" % (self.movie.title, self.time)
+        return "%s : %s ~ %s" % (self.movie.title, self.start_time, self.end_time)
 
 
 class Review(models.Model):
-    RATE_CHOICES = (            # 별모양 5개에서 채우는 걸로 하고 싶은데, 나중에 view 에서 구현 해야할듯
-        (1, 'worst'),
-        (2, 'bad'),
-        (3, 'just'),
-        (4, 'good'),
-        (5, 'best'),
-    )
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reviews')
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reviews')
-    rate = models.SmallIntegerField(choices=RATE_CHOICES)
+    rate = models.SmallIntegerField()
     comment = models.CharField(max_length=255)
 
     def __str__(self):
@@ -59,16 +88,11 @@ class Review(models.Model):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='ticket')
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reserved')
-    movie_time = models.ForeignKey('TimeTable', on_delete=models.CASCADE, related_name='ticket')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='bookings')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='bookings')
+    movie_time = models.ForeignKey('TimeTable', on_delete=models.CASCADE, related_name='bookings')
     booking_time = models.DateTimeField(auto_now_add=True)
-    num = models.IntegerField()
+    num_people = models.IntegerField()
 
     def __str__(self):
-        return "Name: %s, %s %d명" % (self.user.username, self.movie.title, self.num)
-
-
-class WishList(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='wish_list')
-    movie = models.OneToOneField('Movie', on_delete=models.CASCADE, related_name='wish_list_of')
+        return "Name: %s, %s %d명" % (self.user.username, self.movie.title, self.num_people)
