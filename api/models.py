@@ -96,14 +96,13 @@ class Seat(models.Model):
     def __str__(self):
         return self.seat_no
 
-    @property
     def is_reserved(self, time):
         schedule = Schedule.objects.filter(time=time, movie=self.movie, branch=self.branch, screen=self.screen)
         return schedule.reservation_ticket_set.filter(seat=self).exists()
 
 
 class ReservationTicket(models.Model):
-    member = models.ForeignKey('User', on_delete=models.CASCADE, related_name='member')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user')
     schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, related_name='schedule')
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE, related_name='seat')
 
