@@ -64,7 +64,7 @@ class Branch(models.Model):
 
 class Screen(models.Model):
     name = models.CharField(max_length=10, primary_key=True)
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='theaters')
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='screens')
 
     def __str__(self):
         return self.id
@@ -80,9 +80,9 @@ class Movie(models.Model):
 
 class Schedule(models.Model):
     time = models.DateTimeField()
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='movie')
-    branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='branch')
-    screen = models.ForeignKey('Screen', on_delete=models.CASCADE, related_name='screen')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='schedule')
+    branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='schedule')
+    screen = models.ForeignKey('Screen', on_delete=models.CASCADE, related_name='schedule')
 
     def __str__(self):
         return self.id
@@ -103,8 +103,8 @@ class Seat(models.Model):
 
 class ReservationTicket(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reservation_tickets')
-    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, related_name='schedule')
-    seat = models.ForeignKey('Seat', on_delete=models.CASCADE, related_name='seat')
+    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, related_name='reservation_ticktes')
+    seat = models.ForeignKey('Seat', on_delete=models.CASCADE, related_name='reservation_tickets')
 
     def __str__(self):
         return self.id
