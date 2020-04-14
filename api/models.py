@@ -102,7 +102,7 @@ class Seat(models.Model):
 
 
 class ReservationTicket(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reservation_tickets')
     schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, related_name='schedule')
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE, related_name='seat')
 
