@@ -34,13 +34,13 @@ django.db.utils.OperationalError: (1366, "Incorrect string value: '\\xEC\\xA0\\x
 해결이 계속 안 되고 있어서 수정한 부분이 migrate 되지 못해서 shell 코드가 많지 않습니다ㅠㅠ 
 
 * 테이블 생성된 모습
-![MySQL_Client_tables](./git_image/MySQL_Client_tables.jpg "MySQL_Client_tables")
+![MySQL_Client](./git_image/MySQL_Client.jpg "MySQL_Client")
 
 * shell
 
-![1](./git_image/1.jpg "1")  
+![shell_1](./git_image/shell_1.jpg "shell_1")  
 
-![2](./git_image/2.jpg "2")
+![shell_2](./git_image/shell_2.jpg "shell_2")
 
 ### 간단한 회고 
 DB sql 문법과 Django ORM 문법이 달라서 원하는 논리를 풀어내는 데 시간이 걸렸습니다. <br>
