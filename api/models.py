@@ -1,4 +1,6 @@
+from django.core.validators import RegexValidator
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # [제약조건]
@@ -9,53 +11,101 @@ from django.db import models
 
 # 하나의 영화관(db : megabox)에서 상영되는 영화, 누적관객 수, 상영날짜 등으로 모델링
 
+class Director(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Genre(models.Model):
+    # choices
+    GENRE_CHOICES = {
+        ('SF', 'science_fiction'),
+        ('DR', 'drama'),
+        ('RM', 'romance'),
+        ('AC', 'action'),
+        ('HR', 'horror'),
+        ('DS', 'disaster'),
+        ('DC', 'documentary'),
+        ('MS', 'mystery'),
+        ('FT', 'fantasy'),
+        ('CM', 'comedy'),
+        ('SP', 'sport'),
+        ('WR', 'war'),
+        ('EP', 'epic'),
+        ('MU', 'musical'),
+        ('AD', 'adventure'),
+        ('WS', 'western'),
+        ('TH', 'thriller')
+    }
+    name = models.CharField(max_length=20, choices=GENRE_CHOICES)
+
+    # Movie.objects.filter(genre='SF').count() 장르별 통계
+    # name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
-    title = models.CharField(max_length=200, primary_key=True)
-    director = models.CharField(max_length=100)
-    release_year = models.IntegerField()
+    title = models.CharField(max_length=200)
+    director = models.ForeignKey('Director', on_delete=models.CASCADE, related_name='movies')
+    release_date = models.DateField()
     running_time = models.IntegerField()  # minutes 단위
-    country = models.CharField(max_length=100)
-    genre = models.CharField(max_length=100)
-
-    def givetitle(self):
-        return self.title
+    country = models.ForeignKey('Country', on_delete=models.SET_DEFAULT, default="Korea", related_name='movies')
+    genre = models.ForeignKey('Genre', on_delete=models.SET_DEFAULT, default="SF", related_name='movies')
 
     def __str__(self):
         return self.title
 
 
-class ScreeningDates(models.Model):  # 시기별 누적 관객수
-    title = models.ForeignKey('Movie', on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    finished_date = models.DateTimeField(null=True)
-    total_audience = models.IntegerField()
+# user model
+class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=100, validators=[RegexValidator(r'^[0-9]+$',
+                                                                               'Enter a valid phone number.')])  # 제약조건 010-xxxx-xxxx
+    RANK_CHOICES = {
+        ('V', 'vip'),
+        ('G', 'gold'),
+        ('S', 'silver')
+    }
+    rank = models.CharField(max_length=10, choices=RANK_CHOICES)
 
     def __str__(self):
-        return str(self.title)
+        return self.nickname
 
 
-class GenreStat(models.Model):  # 영화 장르별 통계
-    genre = models.ForeignKey('Movie', on_delete=models.CASCADE)
-    genre_count = models.IntegerField()
-
-    def __str__(self):
-        return str(self.genre)
-
-
-class CountryStat(models.Model):  # 영화 국가별 통계
-    country = models.ForeignKey('Movie', on_delete=models.CASCADE)
-    country_count = models.IntegerField()
-
-    def __str__(self):
-        return str(self.country)
+class Watcher(models.Model):  # user- 1toN -watcher- Nto1 - movie
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, related_name='watchers')
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='watchers')
+    watched_at = models.DateField()
 
 
 class Workers(models.Model):  # 영화관 직원 관리
     name = models.CharField(max_length=100)
-    birth = models.DateTimeField()
-    age = models.IntegerField()
-    gender = models.CharField(max_length=100)
-    position = models.CharField(max_length=200, null=True)  # counter, cleaning, food, ticketcheck
+    birth = models.DateField()
+    join_date = models.DateField()  # 입사날짜
+
+    GENDER_CHOICES = {
+        ('F', 'female'),
+        ('M', 'male')
+    }
+    POSITION_CHOICES = {
+        ('CO', 'counter'),
+        ('CL', 'cleaning'),
+        ('FD', 'food'),
+        ('TK', 'ticket')
+    }
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    position = models.CharField(max_length=10, choices=POSITION_CHOICES, null=True, blank=True)
 
     def __str__(self):
         return self.name
