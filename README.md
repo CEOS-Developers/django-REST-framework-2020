@@ -19,7 +19,7 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
 
 ### 모델 설명
 * 테이블 설계도
-![테이블_설계](./git_image/테이블_설계.jpg "테이블_설계")
+![테이블](./git_image/테이블.jpg "테이블")
 
 * E-R Diagram (Type1)
 ![ERD_1](./git_image/ERD_1.jpg "ERD_1")

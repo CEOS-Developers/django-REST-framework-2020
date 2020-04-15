@@ -35,7 +35,7 @@ class MyUser(models.Model):
         # related_name='myusers',
         through='Order',
         through_fields=('user_id', 'pro_num'),
-        verbose_name='구매한 상품',
+        verbose_name='구매한 상품번호',
     )
 
     class Meta:
@@ -77,8 +77,8 @@ class Product(models.Model):
 class Order(models.Model):
     # PK 는 Meta 클래스를 참고
     user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, verbose_name='유저 id')
-    pro_num = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='상품이름')
-    many = models.IntegerField('주문수량')
+    pro_num = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='상품번호')
+    quantity = models.IntegerField('주문수량')
     '''
     # Order 의 destination 은 원래 MyUser 의 location 정보를 참조하려 하였으나 참조 무결성 제약조건에 어긋남
     # 외래키는 다른 릴레이션의 기본키를 참조하는 속성
