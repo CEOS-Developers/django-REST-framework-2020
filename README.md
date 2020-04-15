@@ -10,26 +10,78 @@
 
 ### 모델 설명
 DB : megabox 영화관    
-1. Movie : 영화관에서 상영하는 영화들      
-   title이 Movie의 primary key이다. 
-2. ScreeningDates: 시기별 누적 관객수    
-   foreign key로 Movie의 title를 cascade 옵션으로받는다   
-   start_date: 통계 시작 날짜
-   finished_date: 통계 끝 날짜 , set null = True 
-3. GenreStat:영화관에서 상영하는 영화 장르별 통계   
-   foreign key로 Movie의 genre를 cascade 옵션으로 받는다   
-4. CountryStat:영화관에서 상영하는 영화 국가별 통계   
-   foreign key로 Movie의 country를 cascade 옵션으로 받는다    
-5. Workers: 영화관 직원들 목록     
+1. Movie: 영화관에서 상영하는 영화들
+    title 타이틀
+    director : Foreign Key 
+    release_date 개봉일
+    running_time 상영시간 (minutes 단위)
+    country : Foreign Key 
+    genre : Foreign Key 
 
+2. Director: 감독
+   name
+3. Country: 국가
+   name 
+4. Genre: 장르 
+   name : choices=GENRE_CHOICES 장르 입력할 때 중복을 피하기 위해서 choice 튜플 생성
+    GENRE_CHOICES = {
+        ('SF', 'science_fiction'),
+        ('DR', 'drama'),
+        ('RM', 'romance'),
+        ('AC', 'action'),
+        ('HR', 'horror'),
+        ('DS', 'disaster'),
+        ('DC', 'documentary'),
+        ('MS', 'mystery'),
+        ('FT', 'fantasy'),
+        ('CM', 'comedy'),
+        ('SP', 'sport'),
+        ('WR', 'war'),
+        ('EP', 'epic'),
+        ('MU', 'musical'),
+        ('AD', 'adventure'),
+        ('WS', 'western'),
+        ('TH', 'thriller')
+    }
+
+5. Member: User model 영화관 멤버쉽회원
+  OneToOne 링크 방식 사용
+  nickname 닉네임
+  phone_number 전화번호
+  rank 회원등급
+
+6. Watcher: 유저가 언제 어떤 영화를 봤는지 알 수 있다.
+   member : Foreign key
+   movie: Foreign key
+   watched_at: 날짜
+   
+7. Workers : 영화관 직원들 목록
+   name 이름
+   birth 생년월일
+   join_date 입사일
+   gender 성별
+   position 포지션 :choice 튜플 사용
+   POSITION_CHOICES = {
+        ('CO', 'counter'),
+        ('CL', 'cleaning'),
+        ('FD', 'food'),
+        ('TK', 'ticket')
+    }
+   
 ### ORM 적용해보기
 
+ <모델 수정 전>
 - 객체 생성
 ![](https://images.velog.io/images/kylie/post/ab5b1a0f-4908-47ab-814a-9f94fa1380ed/res1.PNG)![](https://images.velog.io/images/kylie/post/231f575b-9dd3-4fcf-a3ee-725567e2fd89/res2.PNG)![](https://images.velog.io/images/kylie/post/bf3def25-0b03-451d-85db-455945045ec4/res3.PNG)![](https://images.velog.io/images/kylie/post/4c8513c8-a342-42c2-ab0d-7892affe9263/res4.PNG)
 
 - 삽입한 객체들을 쿼리셋으로 조회, filter 함수 사용하기 
  ![](https://images.velog.io/images/kylie/post/f6c3105d-9a25-4b30-86af-69114afa2f2c/res5.PNG)![](https://images.velog.io/images/kylie/post/84b84ade-6bd3-4796-a434-6d8fe5d54617/3%EB%B2%88%EB%8B%B52.PNG)
+ 
+ 
+ 
+ <모델 수정 후>
 
+![](https://images.velog.io/images/kylie/post/1c96c125-ab24-4a2b-8b64-dfa025ba3416/1.PNG)![](https://images.velog.io/images/kylie/post/81900a7c-9e91-47fa-b14b-edfa70ffe93d/3.PNG)
 
 
 ### 간단한 회고 
