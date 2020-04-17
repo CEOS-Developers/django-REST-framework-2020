@@ -1,8 +1,9 @@
 
 # django REST framework 과제 (for ceos 11th)
 
-## 모델 선택 및 데이터 삽입
+### 모델 선택 및 데이터 삽입
 ##### Schedule 모델
+![admin](./image/admin.JPG)
 ~~~
 class Branch(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -38,7 +39,7 @@ class Schedule(models.Model):
         return str(self.id)
 ~~~
 
-## 모든 list를 가져오는 API
+### 모든 list를 가져오는 API
 ##### ap1/schedule/ GET
 ~~~
 HTTP 200 OK
@@ -71,7 +72,7 @@ Vary: Accept
 ]
 ~~~
 
-## 특정한 데이터를 가져오는 API
+### 특정한 데이터를 가져오는 API
 ##### api/schedule/3 GET
 ~~~
 HTTP 200 OK
@@ -88,7 +89,7 @@ Vary: Accept
 }
 ~~~
 
-## 새로운 데이터를 create하도록 요청하는 API
+### 새로운 데이터를 create하도록 요청하는 API
 ##### api/schedule POST
 ~~~
 HTTP 201 Created
@@ -105,7 +106,7 @@ Vary: Accept
 }
 ~~~
 
-## (선택) 특정 데이터를 삭제 또는 업데이트하는 API
+### (선택) 특정 데이터를 삭제 또는 업데이트하는 API
 ##### api/schedule/4 PUT
 ~~~
 HTTP 200 OK
@@ -123,6 +124,14 @@ Vary: Accept
 ~~~
 
 
-## 간단한 회고
-과제 시 어려웠던 점이나 느낀 점, 좋았던 점 등을 간단히 적어주세요!
-	
+### 간단한 회고
+튜토리얼을 따라 하다 보니까 API를 만들 수 있는 방법이 너무 많아서 처음에는 뭘로 코드를 짜야할 지 몰랐지만, 
+결국에는 제일 짧고 쉬운 걸로 코드를 짰어요ㅎㅎ 그리고 그냥 admin에 register만 하면, pk밖에 안 보여서 전체 column을
+보이게 하기 위해서 list_display를 사용했습니다! generics.~View를 사용하니 너무 편리하게 코드를 짤 수 있어서 좋았어요! 
+하지만, 과제를 하다보니까 약간 모델링이 잘못되었다는 생각도 들더라고요.. 
+예를 들면, 제가 생각하기에는 Branch와 Screen이 붙어다니길을 원했는데 Schedule을 보고 제가 다시 선택해야한다는 것을 알게되었어요ㅠ.ㅠ
+그리고, url연결할 때도 검색해보니 사람들이 r'^~'이런 표현을 많이 써서 무턱대고 따라 썼다가 아무것도 작동을 안하더라고요
+(r'^~'이 이전버전에 쓰이고 지금은 path로 대체된다는데 맞나요?)
+
+처음으로 django의 drf 기능을 사용해서 과제해봤는데 너무 편리한 것 같아요!
+틀린 부분 있으면 언제든지 피드백 해주세요 ᕕ( ᐛ )ᕗ
