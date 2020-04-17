@@ -1,0 +1,16 @@
+from django.conf.urls import url
+from django.urls import path
+from api import views
+from rest_framework.urlpatterns import format_suffix_patterns
+
+urlpatterns = [
+    path('branch/', views.BranchList.as_view()),
+    path('branch/<int:pk>/', views.BranchDetail.as_view()),
+    path('screen/', views.ScreenList.as_view()),
+    path('movie/', views.MovieList.as_view()),
+    path('movie/<int:pk>/', views.MovieDetail.as_view()),
+    path('schedule/', views.ScheduleList.as_view()),
+    path('schedule/<int:pk>/', views.ScheduleDetail.as_view()),
+]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

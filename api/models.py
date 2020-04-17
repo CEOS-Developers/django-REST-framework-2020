@@ -51,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['tel']
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Branch(models.Model):
@@ -59,7 +59,7 @@ class Branch(models.Model):
     location = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Screen(models.Model):
@@ -67,7 +67,7 @@ class Screen(models.Model):
     branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='screens')
 
     def __str__(self):
-        return self.id
+        return str(self.name)
 
 
 class Movie(models.Model):
@@ -75,7 +75,7 @@ class Movie(models.Model):
     genre = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Schedule(models.Model):
@@ -85,7 +85,7 @@ class Schedule(models.Model):
     screen = models.ForeignKey('Screen', on_delete=models.CASCADE, related_name='schedule')
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Seat(models.Model):
