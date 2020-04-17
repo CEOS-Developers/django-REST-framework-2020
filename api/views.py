@@ -1,18 +1,5 @@
-from requests import Response
 from rest_framework import permissions, generics, status
 from api.serializers import *
-
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class BranchList(generics.ListCreateAPIView):
