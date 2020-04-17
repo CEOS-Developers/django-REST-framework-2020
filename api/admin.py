@@ -6,10 +6,10 @@ from .models import User, Movie, Review, Booking, TimeTable, Genre, Director, Co
 
 class CustomUserAdmin(UserAdmin):
     # fieldsets : 관리자 리스트 화면에서 출력될 폼 설정 부분
-    UserAdmin.fieldsets[1][1]['fields'] += ('gender', 'phone')
+    UserAdmin.fieldsets[1][1]['fields'] += ('gender', 'phone', 'wish_list')
     # add_fieldsets : User 객체 추가 화면에 출력될 입력 폼 설정 부분
     UserAdmin.add_fieldsets += (
-        ('Additional Info', {'fields': ('gender', 'phone')}),
+        ('Additional Info', {'fields': ('gender', 'phone', 'wish_list')}),
     )
 
 

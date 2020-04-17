@@ -17,7 +17,8 @@ class User(AbstractUser):
     wish_list = models.ManyToManyField('Movie', related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
 
     USERNAME_FIELD = 'email'  # 로그인을 이메일로 하기 위해
-    REQUIRED_FIELDS = []  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
+    REQUIRED_FIELDS = ['username', 'gender', 'phone']  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
+    # REQUIRED_FIELD 에 'username'을 추가하지 않으면 error 발생 : USERNAME_FIELD = 'email'로 설정했더라도 AbstractUser 모델에서 해당 인수를 기대
 
     def __str__(self):
         return "%d. %s" % (self.pk, self.username)
