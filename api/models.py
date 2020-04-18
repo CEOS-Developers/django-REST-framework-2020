@@ -14,14 +14,14 @@ class User(AbstractUser):
     username = models.CharField(max_length=30)
     gender = models.SmallIntegerField(choices=GENDER_CHOICES)
     phone = PhoneNumberField(null=False, blank=False, unique=True)
-    wish_list = models.ManyToManyField('Movie', related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
+    wish_list = models.ManyToManyField('Movie', null=True, blank=True, related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
 
     USERNAME_FIELD = 'email'  # 로그인을 이메일로 하기 위해
     REQUIRED_FIELDS = ['username', 'gender', 'phone']  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
     # REQUIRED_FIELD 에 'username'을 추가하지 않으면 error 발생 : USERNAME_FIELD = 'email'로 설정했더라도 AbstractUser 모델에서 해당 인수를 기대
 
     def __str__(self):
-        return "%d. %s" % (self.pk, self.username)
+        return self.username
 
 
 class Movie(models.Model):
@@ -37,6 +37,9 @@ class Movie(models.Model):
 
 class Country(models.Model):        # Movie 제작 국가는 하나, 한 국가에는 여러 영화가 있음
     name = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.name
 
 
 class Genre(models.Model):
@@ -66,11 +69,17 @@ class Genre(models.Model):
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
     name = models.CharField(choices=GENRE_CHOICES, max_length=15)
 
+    def __str__(self):
+        return "%s - %s" % (self.name, self.movie)
+
 
 class Director(models.Model):
     # 영화에 감독이 여러명일 수도 있고, 감독이 여러 영화를 만들 수 도 있음
     movie = models.ManyToManyField('Movie', related_name='directors')
     name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
 
 
 class TimeTable(models.Model):
@@ -96,7 +105,7 @@ class Review(models.Model):
     comment = models.CharField(max_length=255)
 
     def __str__(self):
-        return "%s - %s : %s점" % (self.movie.title, self.user.username, self.rate)
+        return "%s - %s(%s점) : %s" % (self.movie.title, self.user.username, self.rate, self.comment)
 
 
 class Booking(models.Model):
