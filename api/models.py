@@ -19,7 +19,7 @@ class Director(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class Genre(models.Model):
         ('WS', 'western'),
         ('TH', 'thriller')
     }
-    name = models.CharField(max_length=20, choices=GENRE_CHOICES)
+    name = models.CharField(max_length=20, choices=GENRE_CHOICES, unique=True)
 
     # Movie.objects.filter(genre='SF').count() 장르별 통계
     # name = models.CharField(max_length=20)
@@ -69,7 +69,7 @@ class Movie(models.Model):
 # user model
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=100, validators=[RegexValidator(r'^[0-9]+$',
                                                                                'Enter a valid phone number.')])  # 제약조건 010-xxxx-xxxx
     RANK_CHOICES = {
