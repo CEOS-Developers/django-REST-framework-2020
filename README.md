@@ -29,9 +29,6 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
 
 
 ### ORM 적용해보기
-shell에서 save() 메소드가 잘 안 되어 디비 반영한 파일들을 지우고 다시 반영하면서 OperationalError가 발생했습니다. <br>
-django.db.utils.OperationalError: (1366, "Incorrect string value: '\\xEC\\xA0\\x9C\\xEC\\xA1\\xB0...' for column 'name' at row 1") <br>
-해결이 계속 안 되고 있어서 수정한 부분이 migrate 되지 못해서 shell 코드가 많지 않습니다ㅠㅠ 
 
 * 테이블 생성된 모습
 ![MySQL_Client](./git_image/MySQL_Client.jpg "MySQL_Client")
