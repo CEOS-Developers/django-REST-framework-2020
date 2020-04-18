@@ -77,7 +77,7 @@ class Product(models.Model):
         ordering = ('-supply_date',)   # 최신 공급순
 
     def __str__(self):
-        return self.pro_num
+        return self.pro_name
 
 
 # MyUser 와 Product 의 중개 모델(intermediate model)
@@ -128,7 +128,7 @@ class Manufacturer(models.Model):
         ordering = ('-manu_num',)   # 최신 등록순
 
     def __str__(self):
-        return self.manu_num
+        return self.manu_name
 
 
 class Delivery(models.Model):

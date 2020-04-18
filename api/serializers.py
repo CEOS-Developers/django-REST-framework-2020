@@ -22,7 +22,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        return MyUser(**validated_data)
+        return MyUser.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.password = validated_data.get('password', instance.password)
@@ -33,8 +33,39 @@ class MyUserSerializer(serializers.ModelSerializer):
         instance.date_joined = validated_data.get('date_joined', instance.date_joined)
         instance.address = validated_data.get('address', instance.address)
         instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        # instance.pro_num = validated_data.get('pro_num', instance.pro_num, required=False)
+        instance.save()
 
         return instance
 
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
+class ManufacturerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Manufacturer
+        fields = '__all__'
+
+
+class DeliverySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Delivery
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 
 
