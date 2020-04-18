@@ -48,6 +48,11 @@ INSTALLED_APPS += [
     'rest_framework',
 ]
 
+REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': [     # 기본 권한 추가: 실제로는 로그인한 사용자만 API에 엑세스 할 수 있도록 다양한 권한 설정
+            'rest_framework.permissions.AllowAny'   # 모든 사람에게 API 개방 (로컬에서 실행할 때만!!)
+        ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
