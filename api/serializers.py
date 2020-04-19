@@ -6,9 +6,12 @@ from .models import User, MyUser, Product, Order, Manufacturer, Delivery, Review
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = ('id')
 
 
 class MyUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         # What model you're trying to serialize
         model = MyUser
@@ -16,10 +19,13 @@ class MyUserSerializer(serializers.ModelSerializer):
         fields = ('user', 'password', 'email', 'name', 'phone', 'gender',
                   'date_joined', 'address', 'date_of_birth', 'pro_num')
         '''
-        사용자가 처음 가입시에 패스워드를 입력하지만, 사용자 프로필페이지에서는 패스워드 데이터를 보여주면 절대 안된다. 
+        사용자가 처음 가입시에 패스워드를 입력하지만, 사용자 프로필페이지에서는 패스워드 데이터를 보여주면 안 된다. 
         그렇기 때문에 ModelSerializer 에서 extra_kwargs 내부에 write_only 설정을 추가하여 해당 데이터를 직렬화시 포함시키지 않을 수 있다. 
         '''
-        extra_kwargs = {"password": {"write_only": True}}
+        extra_kwargs = {"password": {"write_only": True},
+                        "date_joined": {"read_only": True},
+                        "pro_num": {"read_only": True}
+                        }
 
     def create(self, validated_data):
         return MyUser.objects.create(**validated_data)
@@ -42,30 +48,32 @@ class MyUserSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('pro_num', 'pro_name', 'inventory', 'price', 'manu_num', 'supply_date', 'supply_vol')
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ('user_id', 'pro_num', 'quantity', 'destination', 'date_ordered', 'message')
+        extra_kwargs = {"date_ordered": {"read_only": True}}
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        fields = '__all__'
+        fields = ('manu_num', 'manu_name', 'phone', 'address', 'supervisor')
 
 
 class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = Delivery
-        fields = '__all__'
+        fields = ('delivery_num', 'order', 'date_delivered', 'transport', 'state')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ('review_num', 'myuser', 'order', 'title', 'image', 'content', 'pub_date')
+        extra_kwargs = {"pub_date": {"read_only": True}}
 
 

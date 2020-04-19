@@ -66,7 +66,7 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name='products',
         max_length=50,
-        verbose_name='제조업체번호',
+        verbose_name='제조업체',
     )
     supply_date = models.DateField('공급일자')
     supply_vol = models.IntegerField('공급량')
@@ -163,15 +163,20 @@ class Delivery(models.Model):
 
 class Review(models.Model):
     review_num = models.AutoField('글번호 PK', primary_key=True)   # PK 별도로 지정
+    myuser = models.ForeignKey('MyUser',
+                               on_delete=models.CASCADE,
+                               related_name='reviews',
+                               default=1,
+                               verbose_name='유저')
     # Order 테이블의 복합기본키(user_id, pro_num)를 가져온다.
     order = models.ForeignKey('Order',
                               on_delete=models.CASCADE,
                               related_name='reviews',
                               verbose_name='주문식별')
-    title = models.CharField('글제목', max_length=100)
+    title = models.CharField('글제목', max_length=100, default='')
     # ImageField 사용시 필수인 이미지처리 라이브러리 pillow 를 설치한다
     image = models.ImageField('글사진', blank=True)   # 썸네일 생성 생략
-    content = models.TextField('글내용')
+    content = models.TextField('글내용', default='')
     pub_date = models.DateTimeField('작성일자', default=timezone.now)
 
     class Meta:
@@ -180,4 +185,4 @@ class Review(models.Model):
         ordering = ('-review_num',)   # 최신 리뷰순
 
     def __str__(self):
-        return self.title
+        return '[{}] {}'.format(self.myuser.name, self.title)
