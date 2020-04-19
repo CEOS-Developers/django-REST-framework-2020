@@ -106,7 +106,7 @@ class Course(models.Model):
     start_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)  # 강의시간
     finish_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)
 ```
-![data](data.PNG)
+![data](./data.PNG)
 
 ### 모든 list를 가져오는 API
 api/course/ GET
