@@ -4,6 +4,7 @@ import datetime
 
 
 class Major(models.Model):
+
     def __str__(self):
         return self.major_name
 
@@ -28,6 +29,9 @@ class Professor(models.Model):
 
 
 class Course(models.Model):
+    def __str__(self):
+        return self.num
+
     num = models.IntegerField(default=0, primary_key=True)
     name = models.CharField(max_length=200)
     credit = models.IntegerField(default=0)
@@ -39,11 +43,17 @@ class Course(models.Model):
 
 
 class Basket(models.Model):
+    def __str__(self):
+        return self.course_num
+
     course_num = models.ForeignKey(Course, on_delete=models.CASCADE)
     std_id = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 
 class Registration(models.Model):
+    def __str__(self):
+        return self.course_num
+
     course_num = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="reg_crs")
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     current_credits = models.IntegerField(default=0)
