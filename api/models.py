@@ -33,9 +33,9 @@ class Course(models.Model):
     credit = models.IntegerField(default=0)
     prof_name = models.ForeignKey(Professor, on_delete=models.CASCADE)
     classroom = models.CharField(max_length=200)
-    weekday = models.CharField(max_length=100)  # 강의 요일
-    start_time = models.TimeField(auto_now=False, auto_now_add=False)  # 강의시간
-    finish_time = models.TimeField(auto_now=False, auto_now_add=False)
+    weekday = models.CharField(max_length=100, default='')  # 강의 요일
+    start_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)  # 강의시간
+    finish_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)
 
 
 class Basket(models.Model):
