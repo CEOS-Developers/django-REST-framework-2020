@@ -9,7 +9,8 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
  <summary> 과제 내용 보기 </summary>
  <div markdown="1">
 [과제 안내](https://www.notion.so/3-Django-ORM-c531472b37e844a6a6d484553037c243)
-
+</div>
+</details>
 ### 서비스 설명
 * 서비스 종류 : 수강신청 시스템
 * 서비스의 기능 :
