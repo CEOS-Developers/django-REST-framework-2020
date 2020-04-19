@@ -6,7 +6,7 @@ from .models import Movie, Director, Genre, Country
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('title', 'director', 'release_date', 'running_time', 'country', 'genre')
+        fields = ('id', 'title', 'director', 'release_date', 'running_time', 'country', 'genre')
 
 
 class DirectorSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class DirectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Director
-        fields = ('name', 'movies')
+        fields = ('id', 'name', 'movies')
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('name', 'movies')
+        fields = ('id', 'name', 'movies')
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -30,4 +30,4 @@ class CountrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Country
-        fields = ('name', 'movies')
+        fields = ('id', 'name', 'movies')
