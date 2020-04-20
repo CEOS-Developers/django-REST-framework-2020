@@ -8,7 +8,7 @@ class MajorAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['std_id', 'std_major', 'grade', 'credits_available']
+    list_display = ['std_id', 'major', 'grade', 'credits_available']
 
 
 class ProfessorAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class ProfessorAdmin(admin.ModelAdmin):
 
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['num', 'name', 'credit', 'prof_name', 'classroom', 'weekday', 'start_time', 'finish_time']
+    list_display = ['code', 'name', 'credit', 'professor', 'classroom', 'weekday', 'start_time', 'finish_time']
 
 
 admin.site.register(Major, MajorAdmin)
