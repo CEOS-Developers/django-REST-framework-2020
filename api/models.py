@@ -107,7 +107,7 @@ class ReservationTicket(models.Model):
     seat = models.ForeignKey('Seat', on_delete=models.CASCADE, related_name='reservation_tickets')
 
     def __str__(self):
-        return self.id
+        return self.schedule
 
 
 class Pay(models.Model):
@@ -118,4 +118,4 @@ class Pay(models.Model):
     reservation = models.ForeignKey('ReservationTicket', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.price
+        return self.payment_option
