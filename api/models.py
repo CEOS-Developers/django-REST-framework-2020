@@ -4,17 +4,17 @@ from phonenumber_field.modelfields import PhoneNumberField  # PhoneNumber librar
 
 
 class User(AbstractUser):
-    GENDER_CHOICES = (
+    GENDER_CHOICES = [
         (0, 'Male'),
         (1, 'Female'),
         (2, 'Not to disclose')
-    )
+    ]
 
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     username = models.CharField(max_length=30)
     gender = models.SmallIntegerField(choices=GENDER_CHOICES)
     phone = PhoneNumberField(null=False, blank=False, unique=True)
-    wish_list = models.ManyToManyField('Movie', null=True, blank=True, related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
+    wish_list = models.ManyToManyField('Movie', blank=True, related_name='wished_bys')  # 하나의 유저가 여러 영화에 대해, 하나의 영화를 여러 유저가 사용
 
     USERNAME_FIELD = 'email'  # 로그인을 이메일로 하기 위해
     REQUIRED_FIELDS = ['username', 'gender', 'phone']  # 필수로 받고 싶은 필드들 넣기. 원래 소스 코드엔 email 필드가 들어가지만, 비워줘야 함.
@@ -43,7 +43,7 @@ class Country(models.Model):        # Movie 제작 국가는 하나, 한 국가�
 
 
 class Genre(models.Model):
-    GENRE_CHOICES = (
+    GENRE_CHOICES = [
         ('DR', 'Drama'),
         ('CM', 'Comedy'),
         ('Th', 'Thriller'),
@@ -64,7 +64,7 @@ class Genre(models.Model):
         ('WR', 'War'),
         ('SP', 'Sport'),
         ('ID', 'indeterminate')
-    )
+    ]
 
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='genres')  # 영화는 여러 장르가 복합될 수 있음
     name = models.CharField(choices=GENRE_CHOICES, max_length=15)
@@ -92,13 +92,13 @@ class TimeTable(models.Model):
 
 
 class Review(models.Model):
-    RATE_CHOICES = (
+    RATE_CHOICES = [
         (1, 'worst'),
         (2, 'bad'),
         (3, 'just'),
         (4, 'good'),
         (5, 'best'),
-    )
+    ]
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='reviews')
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reviews')
     rate = models.SmallIntegerField(choices=RATE_CHOICES)

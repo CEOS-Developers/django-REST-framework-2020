@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Movie, Review, Booking, TimeTable, Genre, Director
+from .models import User, Movie, Review, Booking, TimeTable, Genre
 
 
 class CustomUserAdmin(UserAdmin):
