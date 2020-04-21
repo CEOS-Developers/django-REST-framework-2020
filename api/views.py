@@ -15,7 +15,7 @@ class IsSuperuserOnly(permissions.BasePermission):
         return request.user.is_superuser
 
 
-class UserList(generics.ListCreateAPIView):
+class UserList(generics.ListAPIView):
     permission_classes = [IsSuperuserOnly, ]
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -27,7 +27,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class BranchList(generics.ListCreateAPIView):
+class BranchListCreate(generics.ListCreateAPIView):
     permission_classes = [IsSuperuserOnly, ]
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
@@ -39,13 +39,13 @@ class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BranchSerializer
 
 
-class ScreenList(generics.ListCreateAPIView):
+class ScreenListCreat(generics.ListCreateAPIView):
     permission_classes = [IsSuperuserOnly, ]
     queryset = Screen.objects.all()
     serializer_class = ScreenSerializer
 
 
-class MovieList(generics.ListCreateAPIView):
+class MovieListCreate(generics.ListCreateAPIView):
     permission_classes = [IsSuperuserOnly, ]
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
