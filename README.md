@@ -75,7 +75,8 @@ PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다
 ![cap1](./img/cap2.JPG)
 여기서 DateTimeField 에 대한 RuntimeWarning 이 발생하는데 어떻게 해결해야하는지 모르겠습니다.  
 settings.py 에서 **USE_TZ = True : 장고 내부적으로 시간대를 인식, USE_TZ = False: TIME_ZONE 을 참고하여 local time 사용** 이라고 찾아서 False 로 해봤지만 여전히 warning 은 뜨네요.
-그래도 저장은 잘 됩니다.
+그래도 저장은 잘 됩니다.  
+[해결] USE_TZ = False 로 변경 하니 TIME_ZONE 을 참고하여 local time 을 사용해서 해결됨 (이전에 적용이 안되었었듯) 
 ![cap1](./img/cap3.JPG)
 
 3. TimeTable 객체 생성 및 save
@@ -240,6 +241,10 @@ Genre 모델을 만들었으니 Genre 페이지를 따로 두는 것은 거의 �
 아직도 해결하지 못한 부분이 바로 M:N의 Many-To-Many 관계의 admin 작성인데, User 모델의 wish_lists 도 Movie와 Many-To-Many 관계인데 admin사이트에 잘 적용 되는 반면,
 Director 의 경우는 Movie와 M:N인데 아직도 admin 사이트에 적용이 잘 안되고 있다.
 검색해보니 through를 쓰라고 나와 있지만, 그 경우는 M:N 사이에 애초에 through가 될 model을 끼고 있는 경우에 해당이 되는 것 같다. 
+
+추가) migrations에 대한 것은 이론적으로 뭔가 db에 대한 tracking의 느낌, 혹은 version 처럼 사용하면 된다는 것은
+알겠으나 이미 데이터가 들어있는 경우 처리하는 방법은 아직도 어렵네요... Genre model을 m:n으로 바꾸거나 Movie 안의 field로 choices로 두려고 했는데 migrations가 계속 오류가 나서
+해결이 잘 안되었습니다...ㅠㅠ db drop 하고 migrations 를 다시 만들면 되겠지만 규주님이 말씀해주신대로 migration 수정을 하는 쪽으로 연습을 해보고 싶었는데.. 아직 감을 못잡겠네요.
 
 
 ### 이해 내용 정리
