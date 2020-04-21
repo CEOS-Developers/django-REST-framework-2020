@@ -4,12 +4,14 @@ from api import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
+    path('user/', views.UserList.as_view()),
+    path('user/<int:pk>/', views.UserDetail.as_view()),
     path('branch/', views.BranchList.as_view()),
     path('branch/<int:pk>/', views.BranchDetail.as_view()),
     path('screen/', views.ScreenList.as_view()),
     path('movie/', views.MovieList.as_view()),
     path('movie/<int:pk>/', views.MovieDetail.as_view()),
-    path('schedule/', views.ScheduleList.as_view()),
+    path('schedule/', views.ScheduleListCreate.as_view()),
     path('schedule/<int:pk>/', views.ScheduleDetail.as_view()),
 ]
 

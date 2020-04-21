@@ -6,7 +6,7 @@ from api.models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User  # 사용할 모델
-        fields = ['url', 'tel', 'email', 'groups']  # 사용할 모델의 필드
+        exclude = ['password', 'groups', 'user_permissions', 'is_staff']
 
 
 class BranchSerializer(serializers.ModelSerializer):
