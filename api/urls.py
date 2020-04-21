@@ -4,11 +4,11 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register('user', views.UserViewSet)
-router.register('movie', views.MovieViewSet)
-router.register('timetable', views.TimeTableViewSet)
-router.register('review', views.ReviewViewSet)
-router.register('booking', views.BookingViewSet)
+router.register('users', views.UserViewSet)
+router.register('movies', views.MovieViewSet)
+router.register('timetables', views.TimeTableViewSet)
+router.register('reviews', views.ReviewViewSet)
+router.register('bookings', views.BookingViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
