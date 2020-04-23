@@ -4,10 +4,10 @@ from rest_framework import routers
 from .views import MovieViewSet, DirectorViewSet, GenreViewSet, CountryViewSet
 
 router = routers.DefaultRouter()
-router.register('movie', MovieViewSet)
-router.register('director', DirectorViewSet)
-router.register('genre', GenreViewSet)
-router.register('country', CountryViewSet)
+router.register('movies', MovieViewSet)
+router.register('directors', DirectorViewSet)
+router.register('genres', GenreViewSet)
+router.register('countries', CountryViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

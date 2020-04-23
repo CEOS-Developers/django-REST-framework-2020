@@ -46,7 +46,7 @@ class Genre(models.Model):
         ('WS', 'western'),
         ('TH', 'thriller')
     }
-    name = models.CharField(max_length=20, choices=GENRE_CHOICES, unique=True)
+    name = models.CharField(max_length=2, choices=GENRE_CHOICES, unique=True)
 
     # Movie.objects.filter(genre='SF').count() 장르별 통계
     # name = models.CharField(max_length=20)
@@ -77,7 +77,7 @@ class Member(models.Model):
         ('G', 'gold'),
         ('S', 'silver')
     }
-    rank = models.CharField(max_length=10, choices=RANK_CHOICES)
+    rank = models.CharField(max_length=2, choices=RANK_CHOICES)
 
     def __str__(self):
         return self.nickname
@@ -104,8 +104,8 @@ class Workers(models.Model):  # 영화관 직원 관리
         ('FD', 'food'),
         ('TK', 'ticket')
     }
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    position = models.CharField(max_length=10, choices=POSITION_CHOICES, null=True, blank=True)
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
+    position = models.CharField(max_length=2, choices=POSITION_CHOICES, null=True, blank=True)
 
     def __str__(self):
         return self.name
