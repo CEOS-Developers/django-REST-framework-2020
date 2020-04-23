@@ -1,70 +1,59 @@
-from rest_framework import permissions, generics, status
+from rest_framework import permissions, viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from api.serializers import *
-from rest_framework import permissions
+from datetime import datetime
 
 SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
 
 
-class IsSuperuserOnly(permissions.BasePermission):
+class IsAdminOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return request.user.is_superuser
+        return request.user.is_admin
 
 
-class UserList(generics.ListAPIView):
-    permission_classes = [IsSuperuserOnly, ]
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAdminOnly, ]
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsSuperuserOnly, ]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class BranchListCreate(generics.ListCreateAPIView):
-    permission_classes = [IsSuperuserOnly, ]
+class BranchViewSet(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
+    permission_classes = [IsAdminOnly,]
 
 
-class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsSuperuserOnly, ]
-    queryset = Branch.objects.all()
-    serializer_class = BranchSerializer
-
-
-class ScreenListCreat(generics.ListCreateAPIView):
-    permission_classes = [IsSuperuserOnly, ]
+class ScreenViewSet(viewsets.ModelViewSet):
     queryset = Screen.objects.all()
     serializer_class = ScreenSerializer
+    permission_classes = [IsAdminOnly, ]
 
 
-class MovieListCreate(generics.ListCreateAPIView):
-    permission_classes = [IsSuperuserOnly, ]
+class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    permission_classes = [IsAdminOnly, ]
 
 
-class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsSuperuserOnly, ]
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
-
-
-class ScheduleListCreate(generics.ListCreateAPIView):
-    permission_classes = [IsSuperuserOnly, ]
+class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+    permission_classes = [IsAdminOnly, ]
+
+    @action(detail=True, methods=['get'], name='Set runningTime')
+    def get_running_time(self, request, pk):
+        schedule = self.get_object()
+        serializer = ScheduleSerializer(schedule)
+        finish = datetime.strptime(serializer.data['finish_time'], '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(serializer.data['start_time'], '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int) ((finish - start).seconds/60)
+        return Response("running time : "+str(running_time)+"분")
 
 
-class ScheduleDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsSuperuserOnly, ]
-    queryset = Schedule.objects.all()
-    serializer_class = ScheduleSerializer
 

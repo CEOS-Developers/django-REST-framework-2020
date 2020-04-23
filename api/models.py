@@ -79,7 +79,8 @@ class Movie(models.Model):
 
 
 class Schedule(models.Model):
-    time = models.DateTimeField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField(null=False)
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='schedule')
     branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='schedule')
     screen = models.ForeignKey('Screen', on_delete=models.CASCADE, related_name='schedule')
@@ -94,7 +95,7 @@ class Seat(models.Model):
     screen = models.ForeignKey('Screen', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.seat_no
+        return str(self.seat_no)
 
     def is_reserved(self, time):
         schedule = Schedule.objects.filter(time=time, movie=self.movie, branch=self.branch, screen=self.screen)
