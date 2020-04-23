@@ -46,7 +46,7 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     serializer_class = ScheduleSerializer
     permission_classes = [IsAdminOnly, ]
 
-    @action(detail=True, methods=['get'], name='Set runningTime')
+    @action(detail=True, methods=['get'], url_path='get-running-time', url_name='get_running_time')
     def get_running_time(self, request, pk):
         schedule = self.get_object()
         serializer = ScheduleSerializer(schedule)
