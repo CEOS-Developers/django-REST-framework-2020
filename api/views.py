@@ -11,62 +11,53 @@ from .serializers import MyUserSerializer, ProductSerializer, OrderSerializer, \
 
 class MyUserViewSet(viewsets.ModelViewSet):
     # queryset : how do I get all the information from the database
-    # queryset = MyUser.objects.all()
-    serializer_class = MyUserSerializer
-
+    # 가독성을 위해 가독성을 위해 get_queryset 을 queryset 으로 변경
+    """
     def get_queryset(self):
         return MyUser.objects.all().order_by("-date_joined")
+    """
+    queryset = MyUser.objects.all().order_by("-date_joined")
+    serializer_class = MyUserSerializer
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all().order_by("-supply_date")
     serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        return Product.objects.all().order_by("-supply_date")
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all().order_by("-date_ordered")
     serializer_class = OrderSerializer
-
-    def get_queryset(self):
-        return Order.objects.all().order_by("-date_ordered")
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class ManufacturerViewSet(viewsets.ModelViewSet):
+    queryset = Manufacturer.objects.all().order_by("-manu_num")
     serializer_class = ManufacturerSerializer
-    # queryset = Manufacturer.objects.all()
-
-    def get_queryset(self):
-        return Manufacturer.objects.all().order_by("-manu_num")
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class DeliveryViewSet(viewsets.ModelViewSet):
+    queryset = Delivery.objects.all().order_by("-transport")
     serializer_class = DeliverySerializer
-
-    def get_queryset(self):
-        return Delivery.objects.all().order_by("-transport")
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all().order_by("-review_num")
     serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        return Review.objects.all().order_by("-review_num")
 
     def perform_create(self, serializer):
         serializer.save()
