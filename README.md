@@ -55,9 +55,10 @@ DB sql 문법과 Django ORM 문법이 달라서 원하는 논리를 풀어내는
 ```python
 class MyUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    password = models.CharField('비밀번호', max_length=20)
-    email = models.EmailField('이메일 주소', max_length=200, unique=True)
-    name = models.CharField('이름', max_length=30)
+    # User 모델에 password, email, username, date_joined 이 존재하므로 생략
+    # password = models.CharField('비밀번호', max_length=20)
+    # email = models.EmailField('이메일 주소', max_length=200, unique=True)
+    # name = models.CharField('이름', max_length=30)
     phone = models.CharField('전화번호', max_length=20)
     GENDER = (
         ('male', '남성'),
@@ -65,36 +66,34 @@ class MyUser(models.Model):
         ('neither', '선택 안함'),  
     )
     gender = models.CharField('성별',  max_length=10, choices=GENDER, default='male')
-    date_joined = models.DateTimeField('가입일', default=timezone.now)  
+    date_joined = models.DateTimeField('가입일', default=timezone.now)   
     address = models.CharField('주소', max_length=100)
     date_of_birth = models.DateField('생년월일', null=True, blank=True)
 
     # Product 와의 관계 N:M
-    # Product 클래스 생성 전이므로 클래스 명 'Product'로 관계 설정
-    # Product 에 대해서 구매한 모든 유저들을 조회할 때 사용될 수 있으니 related_name='purchased_users' 지정
-    pro_num = models.ManyToManyField(
+    product = models.ManyToManyField(
         'Product',
         through='Order',
-        through_fields=('user_id', 'pro_num'),
+        through_fields=('myuser', 'product'),
         related_name='purchased_users',
-        verbose_name='구매한 상품번호',
+        verbose_name='구매한 상품',
     )
 
     class Meta:
-        verbose_name = '유저' 
-        verbose_name_plural = '유저'
-        ordering = ('-date_joined',)  
+        verbose_name = '유저'   
+        verbose_name_plural = '유저'   
+        ordering = ('-date_joined',)   
 
     def __str__(self):
         return self.name
 
 
 class Product(models.Model):
-    pro_num = models.AutoField('상품번호 PK', primary_key=True)   
+    pro_num = models.AutoField('상품번호 PK', primary_key=True)  
     pro_name = models.CharField('상품명', max_length=100)
     inventory = models.IntegerField('재고량')
     price = models.IntegerField('단가')
-    manu_num = models.ForeignKey(
+    manufacturer = models.ForeignKey(
         'Manufacturer',
         on_delete=models.CASCADE,
         related_name='products',
@@ -115,34 +114,35 @@ class Product(models.Model):
 
 # MyUser 와 Product 의 중개 모델(intermediate model)
 class Order(models.Model):
-    user_id = models.ForeignKey(MyUser,
+    myuser = models.ForeignKey(MyUser,
                                 on_delete=models.CASCADE,
                                 related_name='orders',
-                                verbose_name='유저 id')
-    pro_num = models.ForeignKey(Product,
+                                verbose_name='유저')
+    product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE,
                                 related_name='orders',
-                                verbose_name='상품번호')
+                                verbose_name='상품')
     quantity = models.IntegerField('주문수량')
     destination = models.CharField('배송지', max_length=100)
-    date_ordered = models.DateTimeField('주문일자', default=timezone.now)  
+    date_ordered = models.DateTimeField('주문일자', default=timezone.now)   
     message = models.CharField('주문요청메시지', max_length=300, blank=True)
 
     class Meta:
         unique_together = (
-            ('user_id', 'pro_num')
+            ('myuser', 'product')
         )
         verbose_name = '주문'
         verbose_name_plural = '주문'
-        ordering = ('-date_ordered',) 
+        ordering = ('-date_ordered',)  
 
 
 class Delivery(models.Model):
-    delivery_num = models.AutoField('배송번호 PK', primary_key=True)   
+    delivery_num = models.AutoField('배송번호 PK', primary_key=True)  
     order = models.ForeignKey('Order',
                               on_delete=models.CASCADE,
                               related_name='deliveries',
                               verbose_name='주문식별')
+
     date_delivered = models.DateTimeField('배송일자', default=timezone.now)
     transport = models.CharField('운송장번호', max_length=20)
     STATE = (
@@ -156,14 +156,14 @@ class Delivery(models.Model):
     class Meta:
         verbose_name = '배송'
         verbose_name_plural = '배송'
-        ordering = ('-transport',)  
+        ordering = ('-transport',)   
 
     def __str__(self):
         return self.delivery_num
 
 
 class Review(models.Model):
-    review_num = models.AutoField('글번호 PK', primary_key=True)  
+    review_num = models.AutoField('글번호 PK', primary_key=True)   
     myuser = models.ForeignKey('MyUser',
                                on_delete=models.CASCADE,
                                related_name='reviews',
@@ -174,18 +174,17 @@ class Review(models.Model):
                               related_name='reviews',
                               verbose_name='주문식별')
     title = models.CharField('글제목', max_length=100, default='')
-    image = models.ImageField('글사진', blank=True)  
+    image = models.ImageField('글사진', blank=True)   
     content = models.TextField('글내용', default='')
     pub_date = models.DateTimeField('작성일자', default=timezone.now)
 
     class Meta:
         verbose_name = '리뷰'
         verbose_name_plural = '리뷰'
-        ordering = ('-review_num',)   
+        ordering = ('-review_num',)  
 
     def __str__(self):
         return '[{}] {}'.format(self.myuser.name, self.title)
-
 ```
 
 * 데이터 삽입 후 

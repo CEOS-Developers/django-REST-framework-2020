@@ -44,7 +44,7 @@ class MyUser(models.Model):
         verbose_name = '유저'   # 모델 자체 이름
         # verbose_name 이 정의되어 있는 상태에서 verbose_name_plural 이 정의되지 않았으면, 자동으로 뒤에 s 하나를 붙여준다.
         verbose_name_plural = '유저'   # 복수형
-        ordering = ('-date_joined',)   # 최신 가입순 # date_joined 속성 삭제
+        ordering = ('-date_joined',)   # 최신 가입순 
 
     def __str__(self):
         return self.name
