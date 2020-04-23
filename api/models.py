@@ -13,9 +13,10 @@ from django.utils import timezone
 class MyUser(models.Model):
     # id 자동생성
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    password = models.CharField('비밀번호', max_length=20)
-    email = models.EmailField('이메일 주소', max_length=200, unique=True)
-    name = models.CharField('이름', max_length=30)
+    # User 모델에 password, email, username, date_joined 이 존재하므로 생략
+    # password = models.CharField('비밀번호', max_length=20)
+    # email = models.EmailField('이메일 주소', max_length=200, unique=True)
+    # name = models.CharField('이름', max_length=30)
     phone = models.CharField('전화번호', max_length=20)
     GENDER = (
         # (DB 저장값, admin 페이지 및 Form 표시값)
@@ -43,7 +44,7 @@ class MyUser(models.Model):
         verbose_name = '유저'   # 모델 자체 이름
         # verbose_name 이 정의되어 있는 상태에서 verbose_name_plural 이 정의되지 않았으면, 자동으로 뒤에 s 하나를 붙여준다.
         verbose_name_plural = '유저'   # 복수형
-        ordering = ('-date_joined',)   # 최신 가입순
+        ordering = ('-date_joined',)   # 최신 가입순 # date_joined 속성 삭제
 
     def __str__(self):
         return self.name

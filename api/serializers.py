@@ -6,9 +6,18 @@ from .models import User, MyUser, Product, Order, Manufacturer, Delivery, Review
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id')
+        fields = ('id', 'password', 'email', 'username',
+                  'is_staff', 'is_active', 'is_superuser', 'last_login')
+        '''
+        사용자가 처음 가입시에 패스워드를 입력하지만, 사용자 프로필페이지에서는 패스워드 데이터를 보여주면 안 된다. 
+        그렇기 때문에 ModelSerializer 에서 extra_kwargs 내부에 write_only 설정을 추가하여 해당 데이터를 직렬화시 포함시키지 않을 수 있다. 
+        '''
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
 
 
+# 회원가입 시리얼라이저
 class MyUserSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
@@ -16,19 +25,15 @@ class MyUserSerializer(serializers.ModelSerializer):
         # What model you're trying to serialize
         model = MyUser
         # fields = '__all__'
-        fields = ('user', 'password', 'email', 'name', 'phone', 'gender',
-                  'date_joined', 'address', 'date_of_birth', 'product')
-        '''
-        사용자가 처음 가입시에 패스워드를 입력하지만, 사용자 프로필페이지에서는 패스워드 데이터를 보여주면 안 된다. 
-        그렇기 때문에 ModelSerializer 에서 extra_kwargs 내부에 write_only 설정을 추가하여 해당 데이터를 직렬화시 포함시키지 않을 수 있다. 
-        '''
-        extra_kwargs = {"password": {"write_only": True},
+        fields = ('user', 'phone', 'gender', 'date_joined', 'address', 'date_of_birth', 'product')
+        extra_kwargs = {
                         "date_joined": {"read_only": True},
                         "product": {"read_only": True}
                         }
 
     def create(self, validated_data):
-        return MyUser.objects.create(**validated_data)
+        myuser = MyUser.objects.create_user(**validated_data)
+        return myuser
 
     def update(self, instance, validated_data):
         instance.password = validated_data.get('password', instance.password)
@@ -39,7 +44,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         instance.date_joined = validated_data.get('date_joined', instance.date_joined)
         instance.address = validated_data.get('address', instance.address)
         instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
-        # instance.pro_num = validated_data.get('product', instance.product, required=False)
+        # instance.product = validated_data.get('product', instance.product, required=False)
         instance.save()
 
         return instance
