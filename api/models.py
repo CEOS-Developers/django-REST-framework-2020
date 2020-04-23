@@ -48,15 +48,15 @@ class Basket(models.Model):
     def __str__(self):
         return self.course
 
-    course = models.ForeignKey(Course, default=0, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, default=0, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
 
 
 class Registration(models.Model):
     def __str__(self):
         return self.course
 
-    course = models.ForeignKey(Course, default=0, on_delete=models.CASCADE, related_name="registrations")
-    student = models.ForeignKey(Student, default=0, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE, related_name="registrations")
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
     current_credits = models.IntegerField(default=0)
     succeed_at = models.DateTimeField(auto_now=True)
