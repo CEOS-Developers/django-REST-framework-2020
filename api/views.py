@@ -1,43 +1,43 @@
 from api.serializers import *
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 
-class MajorList(viewsets.ModelViewSet):
+class MajorList(generics.ListAPIView):
     queryset = Major.objects.all()
     serializer_class = MajorSerializer
 
 
-class MajorDetail(viewsets.ModelViewSet):
+class MajorDetail(generics.RetrieveAPIView):
     queryset = Major.objects.all()
     serializer_class = MajorSerializer
 
 
-class StudentList(viewsets.ModelViewSet):
+class StudentList(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 
-class StudentDetail(viewsets.ModelViewSet):
+class StudentDetail(generics.RetrieveAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 
-class ProfessorList(viewsets.ModelViewSet):
+class ProfessorList(generics.ListAPIView):
     queryset = Professor.objects.all()
     serializer_class = ProfessorSerializer
 
 
-class ProfessorDetail(viewsets.ModelViewSet):
+class ProfessorDetail(generics.RetrieveAPIView):
     queryset = Professor.objects.all()
     serializer_class = ProfessorSerializer
 
 
-class CourseList(viewsets.ModelViewSet):
+class CourseList(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
 
-class CourseDetail(viewsets.ModelViewSet):
+class CourseDetail(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
