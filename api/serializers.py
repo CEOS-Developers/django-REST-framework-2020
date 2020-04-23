@@ -17,14 +17,14 @@ class MyUserSerializer(serializers.ModelSerializer):
         model = MyUser
         # fields = '__all__'
         fields = ('user', 'password', 'email', 'name', 'phone', 'gender',
-                  'date_joined', 'address', 'date_of_birth', 'pro_num')
+                  'date_joined', 'address', 'date_of_birth', 'product')
         '''
         사용자가 처음 가입시에 패스워드를 입력하지만, 사용자 프로필페이지에서는 패스워드 데이터를 보여주면 안 된다. 
         그렇기 때문에 ModelSerializer 에서 extra_kwargs 내부에 write_only 설정을 추가하여 해당 데이터를 직렬화시 포함시키지 않을 수 있다. 
         '''
         extra_kwargs = {"password": {"write_only": True},
                         "date_joined": {"read_only": True},
-                        "pro_num": {"read_only": True}
+                        "product": {"read_only": True}
                         }
 
     def create(self, validated_data):
@@ -39,7 +39,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         instance.date_joined = validated_data.get('date_joined', instance.date_joined)
         instance.address = validated_data.get('address', instance.address)
         instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
-        # instance.pro_num = validated_data.get('pro_num', instance.pro_num, required=False)
+        # instance.pro_num = validated_data.get('product', instance.product, required=False)
         instance.save()
 
         return instance
@@ -48,13 +48,13 @@ class MyUserSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('pro_num', 'pro_name', 'inventory', 'price', 'manu_num', 'supply_date', 'supply_vol')
+        fields = ('pro_num', 'pro_name', 'inventory', 'price', 'manufacturer', 'supply_date', 'supply_vol')
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('user_id', 'pro_num', 'quantity', 'destination', 'date_ordered', 'message')
+        fields = ('myuser', 'product', 'quantity', 'destination', 'date_ordered', 'message')
         extra_kwargs = {"date_ordered": {"read_only": True}}
 
 
