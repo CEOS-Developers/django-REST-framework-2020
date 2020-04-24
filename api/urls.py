@@ -7,6 +7,7 @@ from .views import MyUserViewSet, ProductViewSet, OrderViewSet, ManufacturerView
 router = routers.DefaultRouter()
 # router.register(prefix, viewset, basename)
 # The basename argument is used to specify the initial part of the view name pattern.
+# If the viewset does not include a queryset attribute, you must set basename when registering the viewset.
 router.register(r'myusers', MyUserViewSet, basename='myuser-detail')
 router.register(r'products', ProductViewSet, basename='product-detail')
 router.register(r'orders', OrderViewSet, basename='order-detail')
