@@ -1,5 +1,0 @@
-.idea/
-/venv/
-*.pyc
-db.sqlite3
-/api_server/secrets.json
