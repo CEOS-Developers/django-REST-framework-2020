@@ -51,6 +51,13 @@ class ManufacturerViewSet(viewsets.ModelViewSet):
     serializer_class = ManufacturerSerializer
     queryset = Manufacturer.objects.all().order_by("-manu_num")
 
+    # manufactures/address-busan/   부산에 위치한 제조업체 조회
+    @action(methods=['get'], detail=False, url_path='address-busan', url_name='address_busan')
+    def address_busan(self, request):
+        manu_busan = self.get_queryset().filter(address__contains='busan')
+        serializer = self.get_serializer(manu_busan, many=True)
+        return Response(serializer.data)
+
 
 class DeliveryViewSet(viewsets.ModelViewSet):
     serializer_class = DeliverySerializer
