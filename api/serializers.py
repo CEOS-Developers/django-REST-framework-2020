@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Major, Student, Professor, Course
+from api.models import Major, Student, Professor, Course, Registration
 
 
 class MajorSerializer(serializers.ModelSerializer):
@@ -25,3 +25,8 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+
+class RegSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Registration
+        fields = '__all__'
