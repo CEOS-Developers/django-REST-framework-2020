@@ -23,7 +23,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         # What model you're trying to serialize
         model = MyUser
         # fields = '__all__'
-        fields = ('user', 'phone', 'gender', 'date_joined', 'address', 'date_of_birth', 'product')
+        fields = ('user', 'name', 'phone', 'gender', 'date_joined', 'address', 'date_of_birth', 'product')
         extra_kwargs = {
                         "date_joined": {"read_only": True},
                         "product": {"read_only": True}

@@ -16,7 +16,7 @@ class MyUser(models.Model):
     # User 모델에 password, email, username 이 존재하므로 생략
     # password = models.CharField('비밀번호', max_length=20)
     # email = models.EmailField('이메일 주소', max_length=200, unique=True)
-    # name = models.CharField('이름', max_length=30)
+    name = models.CharField('이름', max_length=30, default='')
     phone = models.CharField('전화번호', max_length=20)
     GENDER = (
         # (DB 저장값, admin 페이지 및 Form 표시값)
