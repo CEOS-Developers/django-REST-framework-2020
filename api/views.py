@@ -4,6 +4,8 @@ DRF 는 자주 사용하는 공통적인 view 로직을 그룹화 한 viewsets �
 """
 from django.db.models import QuerySet
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .models import MyUser, Product, Order, Manufacturer, Delivery, Review
 from .serializers import MyUserSerializer, ProductSerializer, OrderSerializer, \
     ManufacturerSerializer, DeliverySerializer, ReviewSerializer
@@ -33,6 +35,12 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all().order_by("-transport")
 
+    # deliveries/completed/   완료된 배송 조회
+    @action(methods=['get'], detail=False, url_path='completed', url_name='completed')
+    def completed(self, request):
+        deliveries_started = self.get_queryset().filter(state='completed')
+        serializer = self.get_serializer(deliveries_started, many=True)
+        return Response(serializer.data)
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
