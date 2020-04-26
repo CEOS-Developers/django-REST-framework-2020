@@ -273,3 +273,7 @@ Serializer를 구현하는데는 (저수준 -> 고수준) 순서대로 4가지�
     - viewsets.ReadOnlyModelViewSet : 목록 조회, 특정 레코드 조회
     - viewsets.ModelViewSet : 목록 조회, 특정 레코드 생성/조회/수정/삭제
     - Router 를 통해서 하나의 url 로 처리가 가능
+
+
+
+### offline study

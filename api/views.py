@@ -20,12 +20,8 @@ class MovieViewSet(viewsets.ModelViewSet):
     # url : GET movies/on_now_list/ 현재 상영중인 영화들 조회
     @action(methods=['get'], detail=False, url_path='on-now-list', url_name='on-now-list')
     def on_now_list(self, request):
-        mvs = self.get_queryset()
-        on_now_mvs = []
-        for movie in mvs:
-            if movie.is_on_now:
-                on_now_mvs.append(movie)
-        serializer = self.get_serializer(on_now_mvs, many=True)
+        mvs = self.get_queryset().filter(is_on_now=True)
+        serializer = self.get_serializer(mvs, many=True)
         return Response(serializer.data)
 
 
