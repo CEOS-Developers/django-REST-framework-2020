@@ -31,6 +31,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all().order_by("-supply_date")
 
+    # products/many-inventory/   재고량 100개 이상인 상품 조회 (발주 조절)
+    @action(methods=['get'], detail=False, url_path='many-inventory', url_name='many_inventory')
+    def many_inventory(self, request):
+        inventory = self.get_queryset().filter(inventory__gte=100)
+        serializer = self.get_serializer(inventory, many=True)
+        return Response(serializer.data)
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
