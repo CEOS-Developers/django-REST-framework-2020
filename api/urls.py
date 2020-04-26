@@ -1,13 +1,13 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import views
-from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
 router.register('major', views.MajorList)
 router.register('student', views.StudentList)
 router.register('professor', views.ProfessorList)
 router.register('course', views.CourseList)
+router.register('registration', views.RegView)
 
 urlpatterns = [
     # path('major/', views.MajorList.as_view()),
@@ -20,5 +20,3 @@ urlpatterns = [
     # path('course/<int:pk>/', views.CourseDetail.as_view()),
     path('', include(router.urls))
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
