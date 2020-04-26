@@ -75,4 +75,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all().order_by("-review_num")
 
+    # reviews/image/   사진 있는 리뷰만 조회
+    @action(methods=['get'], detail=False, url_path='image', url_name='image')
+    def image(self, request):
+        reviews = self.get_queryset()
+        reviews_images = []
+        for review in reviews:
+            if review.image:
+                reviews_images.append(review)
+            serializer = self.get_serializer(reviews_images, many=True)
+            return Response(serializer.data)
+        return Response('No review having images')
 
