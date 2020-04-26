@@ -45,20 +45,20 @@ DB sql 문법과 Django ORM 문법이 달라서 원하는 논리를 풀어내는
 '유저:상품' 간의 관계가 N:M 관계인데 '주문' 테이블을 중개모델로 설정했는데 N:M 관계가 잘 잡힌 건지 헷갈립니다ㅠ<br> 
 
 ---
-##3주차 과제 (기한: 4/19 일요일까지)
+## 3주차 과제 (기한: 4/19 일요일까지)
 [과제 안내](https://www.notion.so/4-DRF1-API-View-464f612bfd9e42e5945325a4ad253cbf)
 
-##모델 선택 및 데이터 삽입
+## 모델 선택 및 데이터 삽입
 * 선택한 모델 : Order(주문) <br>
-<b>Order(주문) 테이블</b>은 `MyUser(유저), Product(상품), Delivery(배송), Review(리뷰)`와 관계를 가집니다.
+<b>Order(주문) 테이블</b>은 `MyUser(유저), Product(상품), Delivery(배송), Review(리뷰)`와 관계를 가집니다.<br>
 
 ```python
 class MyUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # User 모델에 password, email, username, date_joined 이 존재하므로 생략
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    # User 모델에 password, email, username 이 존재하므로 생략
     # password = models.CharField('비밀번호', max_length=20)
     # email = models.EmailField('이메일 주소', max_length=200, unique=True)
-    # name = models.CharField('이름', max_length=30)
+    name = models.CharField('이름', max_length=30, default='')
     phone = models.CharField('전화번호', max_length=20)
     GENDER = (
         ('male', '남성'),
@@ -66,7 +66,7 @@ class MyUser(models.Model):
         ('neither', '선택 안함'),  
     )
     gender = models.CharField('성별',  max_length=10, choices=GENDER, default='male')
-    date_joined = models.DateTimeField('가입일', default=timezone.now)   
+    date_joined = models.DateTimeField('가입일', default=timezone.now)  
     address = models.CharField('주소', max_length=100)
     date_of_birth = models.DateField('생년월일', null=True, blank=True)
 
@@ -81,15 +81,15 @@ class MyUser(models.Model):
 
     class Meta:
         verbose_name = '유저'   
-        verbose_name_plural = '유저'   
-        ordering = ('-date_joined',)   
+        verbose_name_plural = '유저' 
+        ordering = ('-date_joined',) 
 
     def __str__(self):
         return self.name
 
 
 class Product(models.Model):
-    pro_num = models.AutoField('상품번호 PK', primary_key=True)  
+    pro_num = models.AutoField('상품번호 PK', primary_key=True) 
     pro_name = models.CharField('상품명', max_length=100)
     inventory = models.IntegerField('재고량')
     price = models.IntegerField('단가')
@@ -100,13 +100,13 @@ class Product(models.Model):
         max_length=50,
         verbose_name='제조업체',
     )
-    supply_date = models.DateField('공급일자')
+    supply_date = models.DateTimeField('공급일자', default=timezone.now)
     supply_vol = models.IntegerField('공급량')
 
     class Meta:
         verbose_name = '상품'
         verbose_name_plural = '상품'
-        ordering = ('-supply_date',)   
+        ordering = ('-supply_date',)  
 
     def __str__(self):
         return self.pro_name
@@ -124,7 +124,7 @@ class Order(models.Model):
                                 verbose_name='상품')
     quantity = models.IntegerField('주문수량')
     destination = models.CharField('배송지', max_length=100)
-    date_ordered = models.DateTimeField('주문일자', default=timezone.now)   
+    date_ordered = models.DateTimeField('주문일자', default=timezone.now) 
     message = models.CharField('주문요청메시지', max_length=300, blank=True)
 
     class Meta:
@@ -133,11 +133,11 @@ class Order(models.Model):
         )
         verbose_name = '주문'
         verbose_name_plural = '주문'
-        ordering = ('-date_ordered',)  
+        ordering = ('-date_ordered',) 
 
 
 class Delivery(models.Model):
-    delivery_num = models.AutoField('배송번호 PK', primary_key=True)  
+    delivery_num = models.AutoField('배송번호 PK', primary_key=True)   
     order = models.ForeignKey('Order',
                               on_delete=models.CASCADE,
                               related_name='deliveries',
@@ -156,14 +156,14 @@ class Delivery(models.Model):
     class Meta:
         verbose_name = '배송'
         verbose_name_plural = '배송'
-        ordering = ('-transport',)   
+        ordering = ('-transport',) 
 
     def __str__(self):
         return self.delivery_num
 
 
 class Review(models.Model):
-    review_num = models.AutoField('글번호 PK', primary_key=True)   
+    review_num = models.AutoField('글번호 PK', primary_key=True)  
     myuser = models.ForeignKey('MyUser',
                                on_delete=models.CASCADE,
                                related_name='reviews',
@@ -191,7 +191,7 @@ class Review(models.Model):
 ![데이터 삽입 후](./git_image/데이터_삽입후.jpg "데이터_삽입후")
 
 
-##모든 list를 가져오는 API
+## 모든 list를 가져오는 API
 URL : api/orders/ <br>
 Method : GET
 ```json
@@ -227,7 +227,7 @@ Method : GET
 ```
 ![order_list](./git_image/order_list.jpg "order_list")
 
-##특정한 데이터를 가져오는 API
+## 특정한 데이터를 가져오는 API
 URL : api/orders/<int:pk>/ <br>
 Method : GET
 ```json
@@ -243,7 +243,7 @@ Method : GET
 ```
 ![order_detail](./git_image/order_detail.jpg "order_detail")
 
-##새로운 데이터를 create하도록 요청하는 API
+## 새로운 데이터를 create하도록 요청하는 API
 URL : api/orders/  <br>
 Method : POST
 
@@ -260,9 +260,21 @@ Method : POST
 ![order_created](./git_image/order_created.jpg "order_created")
 ![order_created2](./git_image/order_created2.jpg "order_created2")
 
-##(선택) 특정 데이터를 삭제 또는 업데이트하는 API
-위의 필수 과제와 마찬가지로 요청 URL 및 결과 데이터를 보여주세요!
+## (선택) 특정 데이터를 삭제 또는 업데이트하는 API
+위의 필수 과제와 마찬가지로 요청 URL 및 결과 데이터를 보여주세요! <br>
 
-##간단한 회고
-Serializers에 관해서는 DRF 공식문서가 유일한 리소스인 것 같아 조금 답답했습니다.
-튜토리얼 코드 한줄한줄의 의미에 대해서는 조금 더 공부가 필요한 것 같습니다..!
+## 간단한 회고
+Serializers에 관해서는 DRF 공식문서가 유일한 리소스인 것 같아 조금 답답했습니다. <br>
+튜토리얼 코드 한줄한줄의 의미에 대해서는 조금 더 공부가 필요한 것 같습니다..! <br>
+Django의 User를 OneToOneField로 관계 맺어 유저모델을 만든 경우에 Serializer 생성하면서 많은 삽질을 했습니다. <br>
+계속 user_id가 null이 될 수 없다는 오류가 떠서 할 수 없이 아래와 같이 변경했습니다ㅠㅠ<br>
+
+```python
+# models.py의 MyUser
+user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+```
+
+
+
+
+
