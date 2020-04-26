@@ -42,9 +42,18 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    # SerializerMethodField
+    sales_vol = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
-        fields = ('pro_num', 'pro_name', 'inventory', 'price', 'manufacturer', 'supply_date', 'supply_vol')
+        # fields 에 sales_vol 추가
+        fields = ('pro_num', 'pro_name', 'inventory', 'price', 'manufacturer', 'supply_date', 'supply_vol', 'sales_vol')
+        # fields = '__all__' 
+
+    # get_{field_name} METHOD
+    def get_sales_vol(self, obj):
+        return obj.supply_vol - obj.inventory
 
 
 class OrderSerializer(serializers.ModelSerializer):
