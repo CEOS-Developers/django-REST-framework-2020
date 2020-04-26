@@ -12,9 +12,19 @@ from .serializers import MyUserSerializer, ProductSerializer, OrderSerializer, \
 from django.utils import timezone
 import datetime
 
+
 class MyUserViewSet(viewsets.ModelViewSet):
     serializer_class = MyUserSerializer
     queryset = MyUser.objects.all().order_by("-date_joined")   # list 형식
+
+    # myusers/{pk}/set-address/   주소 변경
+    @action(methods=['patch'], detail=True, url_path='set-address', url_name='set_address')
+    def set_address(self, request, pk):
+        instance = self.get_object()
+        instance.address = "new_address"
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -53,6 +63,9 @@ class DeliveryViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(deliveries_started, many=True)
         return Response(serializer.data)
 
+
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all().order_by("-review_num")
+
+
