@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from .models import MyUser, Product, Order, Manufacturer, Delivery, Review
 from .serializers import MyUserSerializer, ProductSerializer, OrderSerializer, \
     ManufacturerSerializer, DeliverySerializer, ReviewSerializer
-
+from django.utils import timezone
+import datetime
 
 class MyUserViewSet(viewsets.ModelViewSet):
     serializer_class = MyUserSerializer
@@ -24,6 +25,16 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all().order_by("-date_ordered")
+
+    # orders/today/   오늘 주문 들어온 상품 조회
+    @action(methods=['get'], detail=False, url_path='today', url_name='today')
+    def today(self, request):
+        today_min = datetime.datetime.combine(timezone.now().date(), datetime.time.min)
+        today_max = datetime.datetime.combine(timezone.now().date(), datetime.time.max)
+
+        orders_today = self.get_queryset().filter(date_ordered__range=(today_min, today_max))
+        serializer = self.get_serializer(orders_today, many=True)
+        return Response(serializer.data)
 
 
 class ManufacturerViewSet(viewsets.ModelViewSet):

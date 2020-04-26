@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User
 # from django.utils.translation import ugettext_lazy as _   # 다국어 사이트를 위한 맞춤번역 (Form 과 admin) 나중에 적용
 from django.utils import timezone
-# from datetime import datetime   # timezone 으로 통일
 # from django.db.models.signals import post_save   # 오류 발생하여 사용하지 않음
 # from django.dispatch import receiver   # 오류 발생하여 사용하지 않음
 
