@@ -12,8 +12,8 @@ from django.utils import timezone
 # 따라서 OneToOneField 로 방법을 바꿔서 유저 모델을 생성하였음
 class MyUser(models.Model):
     # id 자동생성
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # User 모델에 password, email, username, date_joined 이 존재하므로 생략
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    # User 모델에 password, email, username 이 존재하므로 생략
     # password = models.CharField('비밀번호', max_length=20)
     # email = models.EmailField('이메일 주소', max_length=200, unique=True)
     # name = models.CharField('이름', max_length=30)
@@ -69,7 +69,7 @@ class Product(models.Model):
         max_length=50,
         verbose_name='제조업체',
     )
-    supply_date = models.DateField('공급일자')
+    supply_date = models.DateTimeField('공급일자', default=timezone.now)
     supply_vol = models.IntegerField('공급량')
 
     class Meta:
