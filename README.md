@@ -256,8 +256,58 @@ Vary: Accept
     틀린 부분 있으면 언제든지 피드백 해주세요 ᕕ( ᐛ )ᕗ
    
    
-   
-### 5주차 과제 관련
+### 뷰셋으로 리팩토링 하기
+~~~
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class BranchViewSet(viewsets.ModelViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
+    permission_classes = [IsAdminOnly,]
+
+
+class ScreenViewSet(viewsets.ModelViewSet):
+    queryset = Screen.objects.all()
+    serializer_class = ScreenSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAdminOnly, ]
+~~~
+![filter](./image/viewset.JPG) 
+
+### 뷰셋에 action 추가하기
+~~~
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAdminOnly, ]
+
+    @action(detail=True, methods=['get'], url_path='get-running-time', url_name='get_running_time')
+    def get_running_time(self, request, pk):
+        schedule = self.get_object()
+        serializer = ScheduleSerializer(schedule)
+        finish = datetime.strptime(serializer.data['finish_time'], '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(serializer.data['start_time'], '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int) ((finish - start).seconds/60)
+        return Response("running time : "+str(running_time)+"분")
+~~~
+![filter](./image/action.JPG)
+
+### 5주차 간단한 회고
     저번주에는 ListCreateAPIView와 RetrieveUpdateDestroyAPIView를 사용해서 구현했던 것을 ViewSet으로 모두 바꾸었습니다! 
     저번 것도 다른 것에 비해 비교적 코드가 짧았지만, viewset을 이용하니 더 간결해지네요!
     그리고 저는 ScheduleViewSet을 선정하여 @action을 이용해 영화 끝나는 시간에서 시작하는 시간을 빼서 러닝타임 시간을 계산했습니다!
