@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-
+from datetime import datetime
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -76,6 +76,18 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def running_time(self):
+        schedule = Schedule.objects.filter(
+            start_time=self.start_time,
+            finish_time=self.finish_time,
+            movie=self.movie
+        )
+        finish = datetime.strptime(schedule.finish_time, '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(schedule.start_time, '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int)((finish - start).seconds / 60)
+        return running_time
 
 
 class Schedule(models.Model):

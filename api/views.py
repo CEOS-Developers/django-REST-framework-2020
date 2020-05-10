@@ -20,7 +20,6 @@ class IsAdminOnly(permissions.BasePermission):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminOnly, ]
 
 
 class BranchViewSet(viewsets.ModelViewSet):
@@ -48,8 +47,7 @@ class ScheduleViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='get-running-time', url_name='get_running_time')
     def get_running_time(self, request, pk):
-        schedule = self.get_object()
-        serializer = ScheduleSerializer(schedule)
+        serializer = self.get_serializer(self.get_object())
         finish = datetime.strptime(serializer.data['finish_time'], '%Y-%m-%dT%H:%M:%S%z')
         start = datetime.strptime(serializer.data['start_time'], '%Y-%m-%dT%H:%M:%S%z')
         running_time = (int) ((finish - start).seconds/60)
