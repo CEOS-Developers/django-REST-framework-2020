@@ -62,7 +62,7 @@ class ManufacturerViewSet(viewsets.ModelViewSet):
     # manufactures/address-busan/   부산에 위치한 제조업체 조회
     @action(methods=['get'], detail=False, url_path='address-busan', url_name='address_busan')
     def address_busan(self, request):
-        manu_busan = self.get_queryset().filter(address__icontains='Busan')
+        manu_busan = self.get_queryset().filter(address__icontains='Busan')   # icontains로 대소문자 포함(busan, Busan)
         serializer = self.get_serializer(manu_busan, many=True)
         return Response(serializer.data)
 
@@ -84,9 +84,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all().order_by("-review_num")
 
     # reviews/image/   사진 있는 리뷰만 조회
-    # for 문보다는 filter(image=True) 사용하기
     @action(methods=['get'], detail=False, url_path='image', url_name='image')
     def image(self, request):
+        # for 문보다는 filter(image=True) 사용하기
+        """
         reviews = self.get_queryset()
         reviews_images = []
         for review in reviews:
@@ -95,4 +96,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(reviews_images, many=True)
             return Response(serializer.data)
         return Response('No review having images')
-
+        """
+        reviews_images = self.get_queryset().filter(image=True)
+        serializer = self.get_serializer(reviews_images, many=True)
+        return Response(serializer.data)
