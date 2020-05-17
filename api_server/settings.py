@@ -29,7 +29,7 @@ SECRET_KEY = 'bqkbvbjk_32-hsy7o*r9=dc29^x4vt6y@*v$v-9n+qmu9wfsoa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'rest_framework',
+    'rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,10 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 
 # DB 세팅을 위해 수정해야 할 부분 (default가 sqlite3)
 DATABASES = secrets['DB_SETTINGS']
+
+
+# User Serializer
+REST_AUTH_SERIALIZERS = {'USER_DETAILS_SERIALIZER': 'api.serializers.MyUserSerializer'}
 
 
 # Password validation
