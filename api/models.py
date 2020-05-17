@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 # [제약조건]
 # 1. 1:1과 1:n의 관계 포함
 # 2. 각 모델에 필드 최소 3개 이상 포함

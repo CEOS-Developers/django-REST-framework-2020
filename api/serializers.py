@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group  # 기존 장고 모델
 from rest_framework import serializers
-from .models import Movie, Director, Genre, Country
+from .models import Movie, Director, Genre, Country, Workers
+import datetime
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -31,3 +32,14 @@ class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
         fields = ('id', 'name', 'movies')
+
+
+class WorkersSerializer(serializers.ModelSerializer):
+    days_since_joined = serializers.SerializerMethodField()
+
+    def get_days_since_joined(self, obj):
+        return (datetime.date.today() - obj.join_date).days
+
+    class Meta:
+        model = Workers
+        fields = '__all__'
