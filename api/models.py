@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 # [제약조건]
 # 1. 1:1과 1:n의 관계 포함
 # 2. 각 모델에 필드 최소 3개 이상 포함
@@ -19,7 +20,7 @@ class Director(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -46,7 +47,7 @@ class Genre(models.Model):
         ('WS', 'western'),
         ('TH', 'thriller')
     }
-    name = models.CharField(max_length=20, choices=GENRE_CHOICES)
+    name = models.CharField(max_length=2, choices=GENRE_CHOICES, unique=True)
 
     # Movie.objects.filter(genre='SF').count() 장르별 통계
     # name = models.CharField(max_length=20)
@@ -69,7 +70,7 @@ class Movie(models.Model):
 # user model
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=100, validators=[RegexValidator(r'^[0-9]+$',
                                                                                'Enter a valid phone number.')])  # 제약조건 010-xxxx-xxxx
     RANK_CHOICES = {
@@ -77,7 +78,7 @@ class Member(models.Model):
         ('G', 'gold'),
         ('S', 'silver')
     }
-    rank = models.CharField(max_length=10, choices=RANK_CHOICES)
+    rank = models.CharField(max_length=2, choices=RANK_CHOICES)
 
     def __str__(self):
         return self.nickname
@@ -104,8 +105,8 @@ class Workers(models.Model):  # 영화관 직원 관리
         ('FD', 'food'),
         ('TK', 'ticket')
     }
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    position = models.CharField(max_length=10, choices=POSITION_CHOICES, null=True, blank=True)
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
+    position = models.CharField(max_length=2, choices=POSITION_CHOICES, null=True, blank=True)
 
     def __str__(self):
         return self.name
