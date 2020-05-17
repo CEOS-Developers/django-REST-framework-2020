@@ -57,7 +57,11 @@ API 요청한 URL과 결과 데이터를 코드로 보여주세요!
 </details>
 
 --- 
-## 5주차 과제 (기한: 4/19 일요일까지)
+## 5주차 과제 (기한: 4/26 일요일까지)
+<details>
+ <summary> 과제 내용 보기 </summary>
+ <div markdown="1">
+
 [과제 안내](https://www.notion.so/eveningminusdot/5-DRF2-ViewSet-7c9a9eab099c4073ba7ec26bbd71d5cb)
 
 ### 뷰셋으로 리팩토링 하기
@@ -65,3 +69,20 @@ API 요청한 URL과 결과 데이터를 코드로 보여주세요!
 
 ### 뷰셋에 action 추가하기
 자신의 서비스에 필요하다고 생각되는 action과, 새로운 url 패턴을 매핑해주세요!
+
+ </div>
+</details>
+
+---
+## 6주차 과제 (기한: 5/24 일요일까지)
+
+[과제안내] (https://www.notion.so/eveningminusdot/6-DRF3-filter-and-permission-73251e36d84d42af878574c13a0949b1)
+
+### filter 기능 구현하기
+2개 이상의 query parameter를 이용해 filtering을 구현해 주세요!
+
+### permission 기능 구현하기
+2개 이상의 view에 대해 접근 권한을 설정해보세요!
+
+### README 작성하기
+과제하면서 알게 된 내용과, 자신이 구현한 내용을 정리해 README 내용을 update 해주세요!
