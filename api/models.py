@@ -77,18 +77,6 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-    @property
-    def running_time(self):
-        schedule = Schedule.objects.filter(
-            start_time=self.start_time,
-            finish_time=self.finish_time,
-            movie=self.movie
-        )
-        finish = datetime.strptime(schedule.finish_time, '%Y-%m-%dT%H:%M:%S%z')
-        start = datetime.strptime(schedule.start_time, '%Y-%m-%dT%H:%M:%S%z')
-        running_time = (int)((finish - start).seconds / 60)
-        return running_time
-
 
 class Schedule(models.Model):
     start_time = models.DateTimeField()
@@ -99,6 +87,14 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.time
+
+    @property
+    def running_time(self):
+        schedule = self.schedule
+        finish = datetime.strptime(schedule.finish_time, '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(schedule.start_time, '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int)((finish - start).seconds / 60)
+        return running_time
 
 
 class Seat(models.Model):
