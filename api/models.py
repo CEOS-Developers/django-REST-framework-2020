@@ -90,9 +90,8 @@ class Schedule(models.Model):
 
     @property
     def running_time(self):
-        schedule = self.schedule
-        finish = datetime.strptime(schedule.finish_time, '%Y-%m-%dT%H:%M:%S%z')
-        start = datetime.strptime(schedule.start_time, '%Y-%m-%dT%H:%M:%S%z')
+        finish = datetime.strptime(self.finish_time, '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(self.start_time, '%Y-%m-%dT%H:%M:%S%z')
         running_time = (int)((finish - start).seconds / 60)
         return running_time
 
