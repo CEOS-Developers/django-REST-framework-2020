@@ -76,7 +76,7 @@ API 요청한 URL과 결과 데이터를 코드로 보여주세요!
 ---
 ## 6주차 과제 (기한: 5/24 일요일까지)
 
-[과제안내] (https://www.notion.so/eveningminusdot/6-DRF3-filter-and-permission-73251e36d84d42af878574c13a0949b1)
+[과제안내](https://www.notion.so/eveningminusdot/6-DRF3-filter-and-permission-73251e36d84d42af878574c13a0949b1)
 
 ### filter 기능 구현하기
 2개 이상의 query parameter를 이용해 filtering을 구현해 주세요!
