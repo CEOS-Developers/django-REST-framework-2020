@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-
+from datetime import datetime
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -79,13 +79,21 @@ class Movie(models.Model):
 
 
 class Schedule(models.Model):
-    time = models.DateTimeField()
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField(null=False)
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='schedule')
     branch = models.ForeignKey('Branch', on_delete=models.CASCADE, related_name='schedule')
     screen = models.ForeignKey('Screen', on_delete=models.CASCADE, related_name='schedule')
 
     def __str__(self):
         return self.time
+
+    @property
+    def running_time(self):
+        finish = datetime.strptime(self.finish_time, '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(self.start_time, '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int)((finish - start).seconds / 60)
+        return running_time
 
 
 class Seat(models.Model):
@@ -94,7 +102,7 @@ class Seat(models.Model):
     screen = models.ForeignKey('Screen', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.seat_no
+        return str(self.seat_no)
 
     def is_reserved(self, time):
         schedule = Schedule.objects.filter(time=time, movie=self.movie, branch=self.branch, screen=self.screen)

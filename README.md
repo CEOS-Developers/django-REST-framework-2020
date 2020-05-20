@@ -254,3 +254,72 @@ Vary: Accept
 
     처음으로 django의 drf 기능을 사용해서 과제해봤는데 너무 편리한 것 같아요!
     틀린 부분 있으면 언제든지 피드백 해주세요 ᕕ( ᐛ )ᕗ
+   
+   
+### 뷰셋으로 리팩토링 하기
+~~~
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class BranchViewSet(viewsets.ModelViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
+    permission_classes = [IsAdminOnly,]
+
+
+class ScreenViewSet(viewsets.ModelViewSet):
+    queryset = Screen.objects.all()
+    serializer_class = ScreenSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [IsAdminOnly, ]
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAdminOnly, ]
+~~~
+![filter](./image/viewset.JPG) 
+
+### 뷰셋에 action 추가하기
+~~~
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAdminOnly, ]
+
+    @action(detail=True, methods=['get'], url_path='get-running-time', url_name='get_running_time')
+    def get_running_time(self, request, pk):
+        schedule = self.get_object()
+        serializer = ScheduleSerializer(schedule)
+        finish = datetime.strptime(serializer.data['finish_time'], '%Y-%m-%dT%H:%M:%S%z')
+        start = datetime.strptime(serializer.data['start_time'], '%Y-%m-%dT%H:%M:%S%z')
+        running_time = (int) ((finish - start).seconds/60)
+        return Response("running time : "+str(running_time)+"분")
+~~~
+![filter](./image/action.JPG)
+
+### 5주차 간단한 회고
+    저번주에는 ListCreateAPIView와 RetrieveUpdateDestroyAPIView를 사용해서 구현했던 것을 ViewSet으로 모두 바꾸었습니다! 
+    저번 것도 다른 것에 비해 비교적 코드가 짧았지만, viewset을 이용하니 더 간결해지네요!
+    그리고 저는 ScheduleViewSet을 선정하여 @action을 이용해 영화 끝나는 시간에서 시작하는 시간을 빼서 러닝타임 시간을 계산했습니다!
+    (그래서, 기존에 schedule 모델에 없었던 finish_time 필드를 추가했고 기존의 time이었던 필드는 이름을 start_field로 바꾸었습니다)
+    원래는 단순히 response로 running_time을 반환하는 것이 아니라 movie 모델에 running_time 필드를 추가해서 계산한 값을 그 필드에 넣고 싶었는데ㅠ.ㅠ
+    몇 시간을 해도 되지 않네요ㅠ
+    다른 모델과도 연결되는 필드를 이용해 업데이트 되는 그런 것도 만들어보고 싶었습니다ㅎ...
+    그리고 permission에 관련된 class가 있는데 적용하려면 각각의 viewset에 permission_classes에 값을 넣어줘야만 하는 건가요?
+    모든 viewset에 공통부분이라서 한 가지 코드로 굴러가면 좋을텐데라고 생각했습니다
+    (settings.py에 permission_classes 넣으면 되는 건가요?)
+    
+    수정할 부분 있으면 언제든지 피드백 해주세요 감사합니다😊😊😊
+    
+    
+    

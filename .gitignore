@@ -5,3 +5,4 @@
 /api/__pycache__/
 /api_server/migrations/__pycache__/
 *.pyc
+__pycache__

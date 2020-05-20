@@ -16,7 +16,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ['time', 'movie', 'branch', 'screen']
+    list_display = ['start_time', 'finish_time', 'movie', 'branch', 'screen']
 
 
 admin.site.register(Branch, BranchAdmin)
