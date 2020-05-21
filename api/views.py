@@ -1,12 +1,8 @@
-from django.shortcuts import render
-from rest_framework import permissions, viewsets, status
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from api.serializers import *
-from datetime import datetime
 from django_filters.rest_framework import DjangoFilterBackend
-from api.models import *
 from api.filter import *
 
 SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
