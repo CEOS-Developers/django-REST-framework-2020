@@ -323,3 +323,106 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     
     
     
+## 6주차 과제 
+
+### filter 기능 구현하기
+1. 지점명을 url에 검색시 필터링할 수 있는 BranchFilter
+~~~
+class BranchFilter(FilterSet):  
+    name = filters.CharFilter(method='branch_name_filter')  
+  
+    class Meta:  
+        model = Branch  
+        fields = ['name']  
+  
+    def branch_name_filter(self, queryset, name, value):  
+        name = self.request.query_params.get(name, None)  
+        if name is not None:  
+            queryset = queryset.filter(name=value)  
+        return queryset  
+						 #filter.py
+  ~~~
+  ~~~
+class BranchViewSet(viewsets.ModelViewSet):  
+    queryset = Branch.objects.all()  
+    serializer_class = BranchSerializer  
+    filter_backends = [DjangoFilterBackend]  
+    filterset_class = BranchFilter
+    						#views.py
+~~~
+![filter](./image/filter1.JPG) 
+  2. 영화 제목을 url에 검색시 필터링할 수 있는 MovieFilter
+  ~~~
+class MovieFilter(FilterSet):  
+    title = filters.CharFilter(method='movie_title_filter')  
+  
+    class Meta:  
+        model = Movie  
+        fields = ['title']  
+  
+    def movie_title_filter(self, queryset, title, value):  
+        title = self.request.query_params.get(title, None)  
+        if title is not None:  
+            queryset = queryset.filter(title=value)  
+        return queryset
+					#filter.py
+  ~~~
+~~~
+class MovieViewSet(viewsets.ModelViewSet):  
+    queryset = Movie.objects.all()  
+    serializer_class = MovieSerializer  
+    filter_backends = [DjangoFilterBackend]  
+    filterset_class = MovieFilter
+					    #views.py
+~~~
+![filter](./image/filter2.JPG)
+### permission 기능 구현하기
+1.  로그인 하지 않은 사람은 한정된 방법(GET, HEAD, OPTIONS)만을 사용하여 정보를 볼 수 있도록 permission 설정
+--> 결과화면에 원래 put할 수 있도록 뜨던 하단의 입력란이 뜨지 않는 것을 볼 수 있음
+2. 로그인 하지 않은 사람이 user에 접근 할 수 없도록 permission 설정
+~~~
+SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')  
+  
+#로그인 하지 않은 사람은 한정된 방법만을 사용할 수 있음  
+class IsAuthenticatedOnly(permissions.BasePermission):  
+    def has_permission(self, request, view):  
+        if request.method in permissions.SAFE_METHODS:  
+            return True  
+ return request.user.is_authenticated  
+  
+#로그인 하지 않은 사람이 접근할 수 없게  
+class IsNotAnonymous(permissions.BasePermission):  
+    def has_permission(self, request, view):  
+        if request.user.is_anonymous:  
+            return False
+      
+class UserViewSet(viewsets.ModelViewSet):  
+    queryset = User.objects.all()  
+    serializer_class = UserSerializer  
+    permission_classes = (IsNotAnonymous,)
+
+class MovieViewSet(viewsets.ModelViewSet):  
+    queryset = Movie.objects.all()  
+    serializer_class = MovieSerializer  
+    filter_backends = [DjangoFilterBackend]  
+    filterset_class = MovieFilter  
+    permission_classes = (IsAuthenticatedOnly,)  
+  
+  
+class ScheduleViewSet(viewsets.ModelViewSet):  
+    queryset = Schedule.objects.all()  
+    serializer_class = ScheduleSerializer  
+    permission_classes = (IsAuthenticatedOnly, )
+~~~
+![filter](./image/permission1.JPG)
+![filter](./image/permission2.JPG)
+![filter](./image/permission3.JPG)
+### 6주차 간단한 회고
+	filtering 같은 경우에는 검색을 많이 할 것 같은 단어(영화관 지점, 영화 이름) 대상으로 해봤습니다! 
+	permission은 두 개가 거의 유사하지만 user모델에는 로그인하지 않은 사람이 
+	safe한 방법으로도 접근할 수 없게끔 해야될 것 같아서 따로 분리했습니다.
+	이 과제를 하면서 filtering을 단순히 objects.filter()로 하는 방법말고도 
+	method로 구현해서 url에 있는 parameter를 뽑아내어 필터링 하는 방법을 알게 되었습니다.
+	수정할 부분 있으면 언제든지 알려주세요 감사합니다😊😊😊
+
+    
