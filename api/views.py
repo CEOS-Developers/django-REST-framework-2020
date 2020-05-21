@@ -1,8 +1,12 @@
+from django.shortcuts import render
 from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from api.serializers import *
 from datetime import datetime
+from django_filters.rest_framework import DjangoFilterBackend
+from api.models import *
+from api.filter import *
 
 SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
 
@@ -25,7 +29,9 @@ class UserViewSet(viewsets.ModelViewSet):
 class BranchViewSet(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
-    permission_classes = [IsAdminOnly,]
+    permission_classes = [IsAdminOnly, ]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = BranchFilter
 
 
 class ScreenViewSet(viewsets.ModelViewSet):
@@ -38,6 +44,8 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     permission_classes = [IsAdminOnly, ]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MovieFilter
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
@@ -50,8 +58,5 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(self.get_object())
         finish = datetime.strptime(serializer.data['finish_time'], '%Y-%m-%dT%H:%M:%S%z')
         start = datetime.strptime(serializer.data['start_time'], '%Y-%m-%dT%H:%M:%S%z')
-        running_time = (int) ((finish - start).seconds/60)
-        return Response("running time : "+str(running_time)+"분")
-
-
-
+        running_time = (int)((finish - start).seconds / 60)
+        return Response("running time : " + str(running_time) + "분")
