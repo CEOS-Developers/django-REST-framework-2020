@@ -197,6 +197,7 @@ view를 작성하는 방법이 많고 (API view, generic view, viewset 등) 각 
 1) 처음에 모델링을 할 때는 클래스마다 primary key를 설정해 주었는데, 막상 api 테스팅 후 json 코드를 보니 임의로 정한 primary key를 아예 없애고 자동으로 생성되는 id를 primary key로 하는 것이 좋을 것 같다.
 2) registration 클래스를 사용하려고 보니, start/finish time 관련 연산이나 current credit 관련 연산을 어디에 구현해야 할지 몰라서 이번 과제에서는 사용하지 못했다. 앞으로 공부하면서 수정해 나가야겠다!
 
+---
 
 ##6주차 과제
 ###Filter 기능 구현
