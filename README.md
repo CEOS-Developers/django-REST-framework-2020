@@ -199,8 +199,8 @@ view를 작성하는 방법이 많고 (API view, generic view, viewset 등) 각 
 
 ---
 
-##6주차 과제
-###Filter 기능 구현
+## 6주차 과제
+### Filter 기능 구현
 filter.py
 ```python
 class WeekdayFilter(FilterSet):  # 요일별로 강의를 필터링 할 수 있는 WeekdayFilter
@@ -235,7 +235,7 @@ class CreditFilter(FilterSet):  # 이수학점으로 강의를 필터링 할 수
         return queryset
 ```
 
-###Permission 기능 구현 
+### Permission 기능 구현 
 views.py
 ```python
 SAFE_METHODS = {'GET', 'OPTIONS', 'HEAD'}
@@ -253,6 +253,6 @@ class IsAuthenticated(permissions.BasePermission):  # 로그인 한 사용자만
         return request.user and request.user.is_authenticated
 ```
 
-###간단한 회고
+### 간단한 회고
 1. Filter 기능을 구현할 때 파라미터를 넘겨 필터링 하는 부분에서 아직 관련 python 문법이 익숙하지 않아 조금 어려웠다. 또 예시 코드를 좀더 찾아보려고 구글링하던 중 method로 구현하지 않고 search filter으로 구현한 경우를 봤는데, 그 방법으로도 리팩토링 해볼 계획이다.
 2. Permission을 구현하면서 HTTP method에 대한 내용이 조금 헷갈렸었는데, SAFE_METHOD에서 사용한 OPTIONS와 HEAD method에 대해 좀더 공부해 봐야겠다.
