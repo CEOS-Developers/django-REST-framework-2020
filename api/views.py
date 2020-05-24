@@ -11,7 +11,7 @@ from django.utils import timezone
 import datetime
 
 
-##### Filter #####
+########## Filter ##########
 class ProductFilter(filters.FilterSet):
     # products/?name=pencil
     name = filters.CharFilter(field_name='pro_name')
@@ -22,7 +22,7 @@ class ProductFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['name']   # 이 fields 는 어떤 역할인지 궁금합니다.
+        fields = ['name', 'is_soldout', 'than_hundred']   # 이 fields 는 어떤 역할인지 궁금합니다.
 
     # 재고량(inventory)이 0인 객체 찾기 (목적 : 품절 확인)
     def filter_is_soldout(self, queryset, name, value):
@@ -36,7 +36,31 @@ class ProductFilter(filters.FilterSet):
         return filtered_queryset
 
 
-##### ViewSet #####
+class OrderFilter(filters.FilterSet):
+    # # orders/?destination=Jeju
+    # orders/?destination=Jeju&is_message=True (x 보류)
+    destination = filters.CharFilter(method='filter_jeju_destination')
+    # is_message = filters.BooleanFilter(method='filter_is_message')
+
+    class Meta:
+        model = Order
+        fields = ['destination']
+
+    # 제주(, 산간) 배송 목적지(destination) 주문 찾기 (목적 : 배송료 추가)
+    def filter_jeju_destination(self, queryset, name, value):
+        filtered_queryset = queryset.filter(destination__icontains='Jeju')
+        return filtered_queryset
+
+    # 주문 요청사항(message) 있는지 찾기 (목적 : 배송자에게 전달)
+    # models.py 에서 Order 테이블의 message가 null=True가 아닌 blank=True로 모델링 되어있어, 나중으로 보류
+    '''
+    def filter_is_message(self, queryset, name, value):
+        filtered_queryset = queryset.filter(message=True)
+        return filtered_queryset
+    '''
+
+
+########## ViewSet ##########
 class MyUserViewSet(viewsets.ModelViewSet):
     serializer_class = MyUserSerializer
     queryset = MyUser.objects.all().order_by("-date_joined")   # list 형식
@@ -73,13 +97,16 @@ class OrderViewSet(viewsets.ModelViewSet):
     # orders/today/   오늘 주문 들어온 상품 조회
     @action(methods=['get'], detail=False, url_path='today', url_name='today')
     def today(self, request):
-        # today_min = datetime.datetime.combine(timezone.now().date(), datetime.time.min)
-        # today_max = datetime.datetime.combine(timezone.now().date(), datetime.time.max)
+        today_min = datetime.datetime.combine(timezone.now().date(), datetime.time.min)
+        today_max = datetime.datetime.combine(timezone.now().date(), datetime.time.max)
 
-        # orders_today = self.get_queryset().filter(date_ordered__range=(today_min, today_max))
-        orders_today = self.get_queryset().filter(date_ordered=datetime.datetime.now())
+        orders_today = self.get_queryset().filter(date_ordered__range=(today_min, today_max))
+        # orders_today = self.get_queryset().filter(date_ordered=datetime.datetime.now().day)
         serializer = self.get_serializer(orders_today, many=True)
         return Response(serializer.data)
+
+    filter_backends = [DjangoFilterBackend]
+    filter_class = OrderFilter
 
 
 class ManufacturerViewSet(viewsets.ModelViewSet):
