@@ -1,8 +1,6 @@
-"""
-DRF 는 자주 사용하는 공통적인 view 로직을 그룹화 한 viewsets 를 제공한다.
-여러 개의 view 를 작성하지 않고, 공통적인 행위들을 ViewSet 에 하나로 그룹화하여 간결하게 사용할 수 있다.
-"""
-from django.db.models import QuerySet
+# from django.db.models import QuerySet
+from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -13,6 +11,32 @@ from django.utils import timezone
 import datetime
 
 
+##### Filter #####
+class ProductFilter(filters.FilterSet):
+    # products/?name=pencil
+    name = filters.CharFilter(field_name='pro_name')
+    # products/?is_soldout=true
+    is_soldout = filters.BooleanFilter(method='filter_is_soldout')
+    # products/?than_hundred=true
+    than_hundred = filters.BooleanFilter(method='filter_than_hundred')
+
+    class Meta:
+        model = Product
+        fields = ['name']   # 이 fields 는 어떤 역할인지 궁금합니다.
+
+    # 재고량(inventory)이 0인 객체 찾기 (목적 : 품절 확인)
+    def filter_is_soldout(self, queryset, name, value):
+        filtered_queryset = queryset.filter(inventory__lte=0)
+        return filtered_queryset
+
+    # 재고량(inventory)이 100개 이상인 객체 찾기 (목적 : 발주 조절)
+    # ProductViewSet 의 @action 기능과 겹친다.
+    def filter_than_hundred(self, queryset, name, value):
+        filtered_queryset = queryset.filter(inventory__gte=100)
+        return filtered_queryset
+
+
+##### ViewSet #####
 class MyUserViewSet(viewsets.ModelViewSet):
     serializer_class = MyUserSerializer
     queryset = MyUser.objects.all().order_by("-date_joined")   # list 형식
@@ -31,12 +55,15 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all().order_by("-supply_date")
 
-    # products/many-inventory/   재고량 100개 이상인 상품 조회 (발주 조절)
+    # products/many-inventory/   재고량 100개 이상인 상품 조회 (목적 : 발주 조절)
     @action(methods=['get'], detail=False, url_path='many-inventory', url_name='many_inventory')
     def many_inventory(self, request):
         inventory = self.get_queryset().filter(inventory__gte=100)
         serializer = self.get_serializer(inventory, many=True)
         return Response(serializer.data)
+
+    filter_backends = [DjangoFilterBackend]
+    filter_class = ProductFilter
 
 
 class OrderViewSet(viewsets.ModelViewSet):
