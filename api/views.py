@@ -1,6 +1,7 @@
 # from django.db.models import QuerySet
 from django_filters import rest_framework as filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -64,6 +65,7 @@ class OrderFilter(filters.FilterSet):
 class MyUserViewSet(viewsets.ModelViewSet):
     serializer_class = MyUserSerializer
     queryset = MyUser.objects.all().order_by("-date_joined")   # list 형식
+    permission_classes = (permissions.IsAuthenticated,)
 
     # myusers/{pk}/set-address/   주소 변경
     @action(methods=['patch'], detail=True, url_path='set-address', url_name='set_address')
@@ -78,6 +80,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all().order_by("-supply_date")
+    permission_classes = (permissions.AllowAny,)
 
     # products/many-inventory/   재고량 100개 이상인 상품 조회 (목적 : 발주 조절)
     @action(methods=['get'], detail=False, url_path='many-inventory', url_name='many_inventory')
@@ -93,6 +96,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all().order_by("-date_ordered")
+    permission_classes = (permissions.IsAuthenticated,)
 
     # orders/today/   오늘 주문 들어온 상품 조회
     @action(methods=['get'], detail=False, url_path='today', url_name='today')
@@ -112,6 +116,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 class ManufacturerViewSet(viewsets.ModelViewSet):
     serializer_class = ManufacturerSerializer
     queryset = Manufacturer.objects.all().order_by("-manu_num")
+    permission_classes = (permissions.IsAdminUser,)
 
     # manufactures/address-busan/   부산에 위치한 제조업체 조회
     @action(methods=['get'], detail=False, url_path='address-busan', url_name='address_busan')
@@ -124,6 +129,7 @@ class ManufacturerViewSet(viewsets.ModelViewSet):
 class DeliveryViewSet(viewsets.ModelViewSet):
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all().order_by("-transport")
+    permission_classes = (permissions.IsAdminUser,)
 
     # deliveries/completed/   완료된 배송 조회
     @action(methods=['get'], detail=False, url_path='completed', url_name='completed')
@@ -136,6 +142,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all().order_by("-review_num")
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     # reviews/image/   사진 있는 리뷰만 조회
     @action(methods=['get'], detail=False, url_path='image', url_name='image')
