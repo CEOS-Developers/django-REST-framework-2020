@@ -10,6 +10,7 @@ router.register(r'movies', views.MovieViewSet)
 router.register(r'timetables', views.TimeTableViewSet)
 router.register(r'reviews', views.ReviewViewSet)
 router.register(r'bookings', views.BookingViewSet)
+router.register(r'genres', views.GenreViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

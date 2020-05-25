@@ -49,3 +49,8 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = [IsAuthenticated, ]        # 인증된 요청에 한해서 뷰호출 허용: 유저가 존재하고 로그인 되어 있을 경우
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer

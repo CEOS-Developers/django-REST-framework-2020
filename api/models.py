@@ -70,7 +70,7 @@ class Genre(models.Model):
     name = models.CharField(choices=GENRE_CHOICES, max_length=15)
 
     def __str__(self):
-        return "%s - %s" % (self.name, self.movie)
+        return self.name
 
 
 class Director(models.Model):
