@@ -1,9 +1,4 @@
 # django REST framework 과제 (for ceos 11th)
-
-## 유의사항
-* 본 레포지토리는 백엔드 스터디 2-3주차의 과제를 위한 레포입니다.
-* 따라서 해당 레포를 fork 및 clone 후 local에서 본인의 깃헙 ID 브랜치로 작업한 후 커밋/푸시하고,
-PR 보낼 때도 `본인의 브랜치-> 본인의 브랜치`로 해야 합니다.
  
 ## 2주차 과제 (기한: 4/12 일요일까지)
 [과제 안내](https://www.notion.so/3-Django-ORM-c531472b37e844a6a6d484553037c243)
@@ -275,6 +270,66 @@ user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 ```
 
 
+---
+## 6주차 과제 (기한: 5/24 일요일까지)
+[과제 안내](https://www.notion.so/6-DRF3-filter-and-permission-73251e36d84d42af878574c13a0949b1)
+
+## 과제 진행 내용 
+### filter:
+5주차 과제에서 filter가 포함된 @action을 작성하였기에, <br>
+6주차에서는 2개의 뷰(ProductViewSet, OrderViewSet)를 filterset으로 리팩토링해보았습니다.<br>
+#### * ProductFilter <br>
+테이블 api_product <br>
+![테이블 api_product](./git_image/api_product_.jpg "테이블 api_product")
+
+name필터 : api/products/?name=pencil <br>
+![name필터](./git_image/name=pencil.jpg "name필터")
+
+is_soldout필터 : api/products/?is_soldout=true <br>
+![is_soldout필터](./git_image/is_soldout=true.jpg "is_soldout필터")
+
+than_hundred필터 : api/products/?than_hundred=true <br>
+![than_hundred필터](./git_image/than_hundred=true.jpg "than_hundred필터")
+
+
+#### * OrderFilter <br>
+테이블 api_order <br>
+![테이블 api_order](./git_image/api_order.jpg "테이블 api_order")
+
+destination필터 : api/orders/?destination=jeju <br>
+![destination필터](./git_image/destination=jeju.jpg "destination필터")
+
+### permission: 
+원래는 @action별로 permission을 적용하고 싶었으나 아직 이해가 부족해 view 별로만 간단히 적용하였습니다. <br>
+
+
+## 간단한 회고
+#### 알게된 점
+하나의 뷰에 대해 필터를 걸기 위해 뷰의 쿼리셋은 지워야한다고  생각했는데 그게 아니었습니다.<br>
+오히려 뷰셋의 쿼리셋을 지우니 아래와 같은 오류가 떴습니다.<br>
+`AssertionError: 'ProductViewSet' should either include a `queryset` attribute, or override the `get_queryset()` method.`
+
+#### 곤란했던 점
+* django-filters 와 django-rest-framework-filters을 믹스매치해서 사용해보고 싶었으나 그러지 못했습니다. <br>
+<b>오류 해결과정)</b><br> 
+[django-rest-framework-filters의 RelatedFilter로 필터링하면 다중 관계를 쉽게 넘나들 수 있다](https://pypi.org/project/djangorestframework-filters/#can-i-mix-and-match-django-filter-and-django-rest-framework-filters) 고 하여<br>
+RelatedFilter를 사용해보려고 욕심을 냈으나 아래와 같은 six 오류가 발생했습니다.<br>
+`ImportError: cannot import name 'six' from 'django.utils'` <br>
+위 오류가 `pip install djangorestframework-filters` 이후에 나타난 오류라서, 높은 버전의 장고를 지원하지 않아서 그렇다고 판단했습니다. <br>
+따라서 Django==2.2.8로 reinstall 해주었지만 또 다른 오류가 발생했습니다. <br>
+`ImportError: cannot import name 'QUERY_TERMS' from 'django.db.models.sql.constants'` <br>
+그래서 아예 django-filters만 사용해야겠다고 생각하여 `pip uninstall djangorestframework-filters` 하고  <br>
+다시 Django==3.0.5.로 설정했지만 six 오류는 계속되어 아예 `pip install six` 하고 settings.py에 INSTALLED_APPS에 six를 추가했습니다. <br>
+이후에도 서버를 켤 수 없게 되고 아래와 같은 오류가 났습니다. <br>
+`AttributeError: module 'django_filters.rest_framework.filters' has no attribute 'FilterSet'` <br>
+임포트하는 부분에서 `from django_filters.rest_framework import FilterSet, filters`를 `from django_filters import rest_framework as filters`로 바꿔보니 서버를 실행시킬 수 있었습니다. 
+
+#### 궁금한 점
+-- ViewSet의 @action과 기능이 겹치는 Filter를 제작한 경우에 둘 중 하나를 지우면 좋을지, 둘 중 어느 것을 지우는 것이 좋을지 궁금합니다. <br>
+-- Filter 클래스의 Meta 클래스에 있는 fields = []는 filterset_fields일텐데 어떤 역할인지 궁금합니다.<br>
+-- 아래 두 코드의 차이가 궁금합니다.<br>
+`from django_filters.rest_framework import FilterSet, filters` <br>
+`from django_filters import rest_framework_filters as filters`
 
 
 

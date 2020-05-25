@@ -38,8 +38,8 @@ class ProductFilter(filters.FilterSet):
 
 
 class OrderFilter(filters.FilterSet):
-    # # orders/?destination=Jeju
-    # orders/?destination=Jeju&is_message=True (x 보류)
+    # orders/?destination=Jeju
+    ## orders/?destination=Jeju&is_message=True (x 보류)
     destination = filters.CharFilter(method='filter_jeju_destination')
     # is_message = filters.BooleanFilter(method='filter_is_message')
 
