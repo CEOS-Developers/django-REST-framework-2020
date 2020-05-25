@@ -1,8 +1,5 @@
 # django REST framework 과제 (for ceos 11th)
 
- 
-## 2주차 과제 (기한: 4/12 일요일까지)
-[과제 안내](https://www.notion.so/3-Django-ORM-c531472b37e844a6a6d484553037c243)
 
 ### 서비스 설명
 영화관 데이터베이스 관리 서비스이다.    
