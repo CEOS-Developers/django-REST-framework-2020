@@ -75,8 +75,8 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 
 # DB 세팅을 위해 수정해야 할 부분 (default가 sqlite3)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# with open(os.path.join(BASE_DIR, 'secrets.json'), 'rb') as secret_file:
-#     secrets = json.load(secret_file)
+with open(os.path.join(BASE_DIR, 'secrets.json'), 'rb') as secret_file:
+     secrets = json.load(secret_file)
 
 
 # Password validation
