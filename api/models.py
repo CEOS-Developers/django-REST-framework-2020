@@ -4,11 +4,11 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     def __int__(self):
-        return self.user_id
-    user_id = models.IntegerField(null=False, default=0, unique=True)
-    name = models.CharField(null=False, default='', max_length=100)
-    password = models.CharField(max_length=200)
-    email = models.EmailField(max_length=255, unique=True)
+        return self.id
+    # user_id = models.IntegerField(null=False, default=0, unique=True)
+    # name = models.CharField(null=False, default='', max_length=100)
+    # password = models.CharField(max_length=200)
+    # email = models.EmailField(max_length=255, unique=True)
 
 
 class Major(models.Model):
@@ -23,7 +23,8 @@ class Student(models.Model):
     def __int__(self):
         return self.std_id
 
-    std_id = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="std_id")
+    # std_id = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="std_id")
+    std_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name="std_id")
     major = models.ForeignKey(Major, on_delete=models.CASCADE, related_name="major")
     grade = models.IntegerField(default=1)
     credits_available = models.IntegerField(default=18)
@@ -34,9 +35,9 @@ class Professor(models.Model):
     def __str__(self):
         return self.prof_name
 
-    prof_id = models.IntegerField(default=0)
-    prof_name = models.CharField(max_length=200)
-    prof_major = models.ForeignKey(Major, on_delete=models.CASCADE)
+    # prof_id = models.IntegerField(default=0)
+    name = models.CharField(max_length=200)
+    major = models.ForeignKey(Major, on_delete=models.CASCADE)
 
 
 class Course(models.Model):

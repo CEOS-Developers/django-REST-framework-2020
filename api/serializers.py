@@ -5,7 +5,7 @@ from api.models import User, Major, Student, Professor, Course, Basket, Registra
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['user_id', 'name', 'password']
+        fields = ['id', 'name', 'password']
         extra_kwargs = {'password':{'write_only':True},}
 
 

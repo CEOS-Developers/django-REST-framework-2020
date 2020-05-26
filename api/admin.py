@@ -5,7 +5,7 @@ from .models import *
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['user_id', 'email']
+    list_display = ['id', 'email']
 
 
 class MajorAdmin(admin.ModelAdmin):
@@ -17,7 +17,7 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 class ProfessorAdmin(admin.ModelAdmin):
-    list_display = ['prof_id', 'prof_name', 'prof_major']
+    list_display = ['id', 'name', 'major']
 
 
 class CourseAdmin(admin.ModelAdmin):
