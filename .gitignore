@@ -3,3 +3,5 @@
 api_server/db.sqlite3
 *.pyc
 api_server/__pycache__/
+api/__pycache__/
+api/migrations/__pycache__/
