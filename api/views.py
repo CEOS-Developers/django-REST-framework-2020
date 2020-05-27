@@ -14,14 +14,14 @@ class IsAdmin(permissions.BasePermission):
         return False
 
 
-class IsAuthenticated(permissions.BasePermission):
+class AuthenticatedReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             if request.method in permissions.SAFE_METHODS:
                 return True
             else:
                 return False
-        return True
+        return False
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -35,13 +35,13 @@ class BranchViewSet(viewsets.ModelViewSet):
     serializer_class = BranchSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = BranchFilter
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AuthenticatedReadOnly,)
 
 
 class ScreenViewSet(viewsets.ModelViewSet):
     queryset = Screen.objects.all()
     serializer_class = ScreenSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AuthenticatedReadOnly,)
 
 
 class MovieViewSet(viewsets.ModelViewSet):
@@ -49,13 +49,13 @@ class MovieViewSet(viewsets.ModelViewSet):
     serializer_class = MovieSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = MovieFilter
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AuthenticatedReadOnly,)
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AuthenticatedReadOnly,)
 
     @action(detail=True, methods=['get'], url_path='get-running-time', url_name='get_running_time')
     def get_running_time(self, request, pk):
