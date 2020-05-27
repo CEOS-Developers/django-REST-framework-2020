@@ -12,7 +12,7 @@ class BranchFilter(FilterSet):
     def branch_name_filter(self, queryset, name, value):
         name = self.request.query_params.get(name, None)
         if name is not None:
-            queryset = queryset.filter(name=value)
+            queryset = queryset.filter(name__icontains=value)
         return queryset
 
 
@@ -26,6 +26,8 @@ class MovieFilter(FilterSet):
     def movie_title_filter(self, queryset, title, value):
         title = self.request.query_params.get(title, None)
         if title is not None:
-            queryset = queryset.filter(title=value)
+            queryset = queryset.filter(title__icontains=value)
         return queryset
+
+
 
