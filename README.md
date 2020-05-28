@@ -277,3 +277,92 @@ Serializer를 구현하는데는 (저수준 -> 고수준) 순서대로 4가지�
 
 
 ### offline study
+- property method 사용해서
+- query param을 이용 하여 ex) api/item/?~~
+
+
+## 6주차 과제 (기한: 5/24 일요일까지)
+
+[과제안내](https://www.notion.so/eveningminusdot/6-DRF3-filter-and-permission-73251e36d84d42af878574c13a0949b1)
+
+### filter 기능 구현하기
+
+```python
+class UserFilter(FilterSet):
+    class Meta:
+        model = User
+        fields = ['gender']
+
+    # users /?gender = 0,1,2
+    def gender_filter(self, queryset, name, value):
+        gender_queryset = queryset.filter(gender=value)
+        return gender_queryset
+```
+![filter](./img/filter_gender0.JPG)
+![filter](./img/filter_gender1.JPG)
+```python
+class ReviewFilter(FilterSet):
+    # reviews/?comment=value
+    comment = filters.CharFilter(method='comments_filter')
+
+    class Meta:
+        model = Review
+        fields = ['comment']
+
+    # 'value'가 들어간 comment 필터링
+    def comments_filter(self, queryset, comment, value):
+        comment = self.request.query_params.get(comment, None)
+        if comment is not None:
+            queryset = queryset.filter(comment__icontains=value)
+        return queryset
+```
+![filter](./img/filter_comment.JPG)
+```python
+class MovieFilter(FilterSet):
+    # movies/?title=value
+    title = filters.CharFilter(method='movie_title_filter')
+
+    class Meta:
+        model = Movie
+        fields = ['title']
+
+    def movie_title_filter(self, queryset, title, value):
+        title = self.request.query_params.get(title, None)
+        if title is not None:
+            queryset = queryset.filter(title__icontains=value)
+        return queryset
+```
+![filter](./img/filter_movie1.JPG)
+### permission 기능 구현하기
+이전 과제할 때 permission 을 적용을 해뒀습니다.  
+
+#### 이해사항
+- FilterView()
+Generic View 를 사용할 경우 사용/  
+
+- Generating filters with Meta.fields
+FilterSet의 메타 클래스는 중요한 코드 중복 없이 쉽게 여러 개 필터를 지정할 수 있는 fields 속성을 제공한다  
+
+- Customize filtering with Filter.method
+사용자는 필터링을 수행하는 method를 지정하여 필터의 동작을 제어할 수 있다
+
+#### 6주차 회고
+filter 을 사용할 때 datetimefield를 다루는 부분이 많이 미숙하다는 것을 느꼈습니다. 원래 vip_filter를 구현하여 
+가입 날짜와 현재 날짜를 뺀 날수로 filter를 구성해 보자 하였는데, 마음처럼 쉽게 안되었습니다. 다시 시도해 보겠지만, 많이 부족함을 느끼고 있습니다.
+후에 든생각은 vip의 경우 filter보다는 @action으로 구현하는 것이 더 알맞겠다는 생각이 들었는데, 다른분들은 어떻게 생각하실지 모르겠습니다.
+
+개인적으로 너무 많이 늦어서 정말 정말 죄송합니다... 스스로 부족함을 정말 많이 느끼고 정신없었던 2주였습니다.  
+늦은 전공 시험이 있었고, 폭탄같은 학교 과제들이 쏟아지는 와중에 욕심이 많아, 현재 진행하는 진행하는 아이템의 제안자로서 기획까지 어느정도 해야하다보니 잠시 개발자로서의 본업에 소홀했던 것 같습니다.
+본업에 집중하지 못한 점 깊이 반성하겠습니다...ㅠㅠ
+
+##### ps.그냥 헷갈려서 기억해두기 위한 것.
+```python
+def post(self, request, *args, **kwargs):
+           # POST have request.data 
+           return self.process_request(request, request.data)
+
+def get(self, request, format=None):
+   # GET have request.query_params
+   return self.process_request(request, request.query_params)
+```
+
