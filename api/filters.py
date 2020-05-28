@@ -9,8 +9,8 @@ class UserFilter(FilterSet):
 
     # users /?gender = 0,1,2
     def gender_filter(self, queryset, name, value):
-        gener_queryset = queryset.filter(gender=value)
-        return gener_queryset
+        gender_queryset = queryset.filter(gender=value)
+        return gender_queryset
 
 
 class ReviewFilter(FilterSet):
