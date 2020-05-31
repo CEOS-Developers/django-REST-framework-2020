@@ -26,9 +26,9 @@ with open(os.path.join(BASE_DIR, 'secrets.json'), 'rb') as secret_file:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['webdjangodb.ckqjgytp9qpy.ap-northeast-2.rds.amazonaws.com']
 
 
 # Application definition
