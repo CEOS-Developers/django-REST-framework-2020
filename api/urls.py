@@ -3,11 +3,13 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register('major', views.MajorList)
-router.register('student', views.StudentList)
-router.register('professor', views.ProfessorList)
-router.register('course', views.CourseList)
-router.register('registration', views.RegView)
+router.register('user', views.UserViewSet)
+router.register('major', views.MajorViewSet)
+router.register('student', views.StudentViewSet)
+router.register('professor', views.ProfessorViewSet)
+router.register('course', views.CourseViewSet)
+router.register('basket', views.BasketViewSet)
+router.register('registration', views.RegViewSet)
 
 urlpatterns = [
     # path('major/', views.MajorList.as_view()),
