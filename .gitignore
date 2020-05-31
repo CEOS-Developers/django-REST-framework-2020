@@ -1,7 +1,7 @@
 .idea/
 /venv/
 
-/api_server/secrets.json
+/config/secrets.json
 # Created by https://www.gitignore.io/api/django,python
 # Edit at https://www.gitignore.io/?templates=django,python
 
