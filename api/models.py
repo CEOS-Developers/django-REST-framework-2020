@@ -3,8 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    def __int__(self):
-        return self.user_id
+    def __str__(self):
+        return str(self.user_id)
+
     user_id = models.IntegerField(null=False, default=0, unique=True)
     name = models.CharField(null=False, default='', max_length=100)
     password = models.CharField(max_length=200)
@@ -15,15 +16,15 @@ class Major(models.Model):
     def __str__(self):
         return self.name
 
-    num = models.IntegerField(default=0, primary_key=True)
+    num = models.IntegerField(default=0)
     name = models.CharField(max_length=200)
 
 
 class Student(models.Model):
-    def __int__(self):
-        return self.std_id
+    def __str__(self):
+        return str(self.std_id)
 
-    std_id = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, primary_key=True, related_name="std_id")
+    std_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name="std_id")
     major = models.ForeignKey(Major, on_delete=models.CASCADE, related_name="major")
     grade = models.IntegerField(default=1)
     credits_available = models.IntegerField(default=18)
@@ -40,10 +41,10 @@ class Professor(models.Model):
 
 
 class Course(models.Model):
-    def __int__(self):
-        return self.code
+    def __str__(self):
+        return str(self.code)
 
-    code = models.IntegerField(default=0, unique=True)
+    code = models.IntegerField(default=1, unique=True)
     name = models.CharField(max_length=200)
     credit = models.IntegerField(default=0)
     professor = models.ForeignKey(Professor, null=True, on_delete=models.CASCADE, related_name="prof")
@@ -61,16 +62,16 @@ class Course(models.Model):
 
 
 class Basket(models.Model):
-    def __int__(self):
-        return self.course
+    def __str__(self):
+        return str(self.course)
 
     course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
 
 
 class Registration(models.Model):
-    def __int__(self):
-        return self.course
+    def __str__(self):
+        return str(self.course)
 
     course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE, related_name="registrations")
     student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
