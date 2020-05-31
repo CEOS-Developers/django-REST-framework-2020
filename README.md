@@ -197,9 +197,10 @@ view를 작성하는 방법이 많고 (API view, generic view, viewset 등) 각 
 1) 처음에 모델링을 할 때는 클래스마다 primary key를 설정해 주었는데, 막상 api 테스팅 후 json 코드를 보니 임의로 정한 primary key를 아예 없애고 자동으로 생성되는 id를 primary key로 하는 것이 좋을 것 같다.
 2) registration 클래스를 사용하려고 보니, start/finish time 관련 연산이나 current credit 관련 연산을 어디에 구현해야 할지 몰라서 이번 과제에서는 사용하지 못했다. 앞으로 공부하면서 수정해 나가야겠다!
 
+---
 
-##6주차 과제
-###Filter 기능 구현
+## 6주차 과제
+### Filter 기능 구현
 filter.py
 ```python
 class WeekdayFilter(FilterSet):  # 요일별로 강의를 필터링 할 수 있는 WeekdayFilter
@@ -234,7 +235,7 @@ class CreditFilter(FilterSet):  # 이수학점으로 강의를 필터링 할 수
         return queryset
 ```
 
-###Permission 기능 구현 
+### Permission 기능 구현 
 views.py
 ```python
 SAFE_METHODS = {'GET', 'OPTIONS', 'HEAD'}
@@ -252,6 +253,6 @@ class IsAuthenticated(permissions.BasePermission):  # 로그인 한 사용자만
         return request.user and request.user.is_authenticated
 ```
 
-###간단한 회고
+### 간단한 회고
 1. Filter 기능을 구현할 때 파라미터를 넘겨 필터링 하는 부분에서 아직 관련 python 문법이 익숙하지 않아 조금 어려웠다. 또 예시 코드를 좀더 찾아보려고 구글링하던 중 method로 구현하지 않고 search filter으로 구현한 경우를 봤는데, 그 방법으로도 리팩토링 해볼 계획이다.
 2. Permission을 구현하면서 HTTP method에 대한 내용이 조금 헷갈렸었는데, SAFE_METHOD에서 사용한 OPTIONS와 HEAD method에 대해 좀더 공부해 봐야겠다.
