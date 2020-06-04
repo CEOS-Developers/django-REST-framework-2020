@@ -1,0 +1,206 @@
+[33mcommit 6d594e8c5214a4abdbb03ecd71e2baac1b7675ad[m[33m ([m[1;36mHEAD -> [m[1;32mkyliebaek[m[33m, [m[1;31morigin/kyliebaek[m[33m)[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun May 31 13:13:37 2020 +0900
+
+    update db settings
+
+[33mcommit 933ff48af70c6bc29b1eb9186a3638857ae70520[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Mon May 25 23:06:01 2020 +0900
+
+    Update README.md
+
+[33mcommit 522f7ab3fd16891df4ffc403243510e85a0aaba4[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Mon May 25 23:05:40 2020 +0900
+
+    Update README.md
+
+[33mcommit 28567ef7a46e85736e5f64265e0cf42a1a1729f5[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Mon May 25 22:50:40 2020 +0900
+
+    DRF : filtering and Permission
+
+[33mcommit 745d31ee58c83434ce566c207d8ee8be399b6406[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun May 17 23:06:20 2020 +0900
+
+    add SerializerMethodField
+
+[33mcommit 804d86c1f0864cc01541bc584171cb968efea8ef[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 26 03:43:11 2020 +0900
+
+    ViewSet action decorator
+
+[33mcommit b4ed4bfd46b620288e25aeafab4741706f69a0c1[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Thu Apr 23 18:16:52 2020 +0900
+
+    API by ViewSet
+
+[33mcommit ce7eb81299046b935553bc9008c528e8bba66a1a[m
+Merge: 23811bc 220d54f
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 10:42:51 2020 +0900
+
+    Merge branch 'kyliebaek' of https://github.com/KylieBaek/django-REST-framework-2020 into kyliebaek
+
+[33mcommit 23811bcabdf33e180c027ff2bf5bdaa2c0390a68[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 10:31:23 2020 +0900
+
+    REST API
+
+[33mcommit 6da7e54d5c760fdc4ea205eb33f9149e9c84760b[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 09:13:53 2020 +0900
+
+    API
+
+[33mcommit 0b657f874615e0eece7c2d563730371534f7fdb5[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 08:54:33 2020 +0900
+
+    Rest API
+
+[33mcommit 22a6e589b44385195bef618b45055cf95be63a16[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 08:40:13 2020 +0900
+
+    API by ViewSet
+
+[33mcommit 634200c2575b5f92e974f307608fe0e287f5a0b2[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 06:36:57 2020 +0900
+
+    serializer
+
+[33mcommit f8486ad229b02688dd59ecc0b661b366d3e19fc2[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 06:11:36 2020 +0900
+
+    add api
+
+[33mcommit 50c56d62df674febe2880ba13d0ceeb25ab0dc85[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 19 06:10:31 2020 +0900
+
+    add unique value
+
+[33mcommit 220d54fde7ca9f931e91480e1e3469976b20ba9b[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Wed Apr 15 09:42:26 2020 +0900
+
+    Update README.md
+    
+    피드백 모델 수정 반영
+
+[33mcommit 77315be5919465e18e3e2534279f09bb4e88c641[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Wed Apr 15 09:40:35 2020 +0900
+
+    Update README.md
+    
+    model 수정
+
+[33mcommit 4f446b8803889271943d3d9f8f647e772ee48d5e[m
+Merge: fe22d4d b049413
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Wed Apr 15 09:24:03 2020 +0900
+
+    Merge branch 'kyliebaek' of https://github.com/KylieBaek/django-REST-framework-2020 into kyliebaek
+
+[33mcommit fe22d4df9f316a2f1a7198f1e288a666aa94f796[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Wed Apr 15 09:09:32 2020 +0900
+
+    feedback edit
+
+[33mcommit b0494131ef630a2f22e0612235d32ef5b38c51e1[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 12 22:30:08 2020 +0900
+
+    Update README.md
+    
+    Update README.md
+
+[33mcommit d930f020669622b9550d9d23824de01dd1dd3a12[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 12 21:56:17 2020 +0900
+
+    django modelling final commit
+
+[33mcommit 2cc492c78724090971ae251c26b516aca4b06302[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 12 19:28:55 2020 +0900
+
+    django modlling
+
+[33mcommit a369f635d99a70b59af1480262b434a32f4cfda2[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Sun Apr 12 16:41:24 2020 +0900
+
+    first modelling
+
+[33mcommit c95e9507efd9adf4d4e18536f14ce024d15462c5[m
+Author: KylieBaek <59535282+KylieBaek@users.noreply.github.com>
+Date:   Fri Apr 10 03:03:27 2020 +0900
+
+    mysql과 django 연동
+
+[33mcommit 7e88a419a0ce82369db92a3f08a7d9167ec38b4f[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/jystella17[m[33m, [m[1;31morigin/justzino[m[33m, [m[1;31morigin/code4human[m[33m, [m[1;31morigin/Seodings[m[33m, [m[1;31morigin/KylieBaek[m[33m, [m[1;31morigin/Kim-Ha-Jeong[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 05:44:37 2020 +0900
+
+    edit urls.py
+
+[33mcommit bdf30a90aa5d51d6aaf1d0d389a3940fb8bb67fd[m[33m ([m[1;31morigin/heejoe0222[m[33m)[m
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 03:10:18 2020 +0900
+
+    edit README.md
+
+[33mcommit 1c8c039625476b14ad1f761faab16954388247d3[m
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 03:09:25 2020 +0900
+
+    update README.md
+
+[33mcommit 042b2bd6eb9a9f9db99dc6ce29825ea40614a405[m
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 02:31:21 2020 +0900
+
+    add requirements.txt
+
+[33mcommit f95180ffdb0ce843b8afe87779e14b574e87db62[m
+Merge: 60987bf abfcf4a
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 02:17:56 2020 +0900
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 60987bfd9857b09c7b1e843bf435cf80042e6216[m
+Author: heejoe0222 <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 02:17:11 2020 +0900
+
+    set assignment environment
+
+[33mcommit abfcf4ae485340b9dbe5cca719a8f3355a77071d[m
+Author: Heejoe Choi <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 00:23:55 2020 +0900
+
+    Update README.md
+
+[33mcommit 4f7f3f8fedf6884452e1b685f55fa34ef6d7de69[m
+Author: Heejoe Choi <46959558+heejoe0222@users.noreply.github.com>
+Date:   Mon Apr 6 00:23:41 2020 +0900
+
+    Update README.md
+
+[33mcommit 365d4b4c71fcfa905c894ba99d7e5741eedb7018[m
+Author: Heejoe Choi <46959558+heejoe0222@users.noreply.github.com>
+Date:   Sun Apr 5 19:04:17 2020 +0900
+
+    Initial commit

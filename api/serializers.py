@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group  # 기존 장고 모델
 from rest_framework import serializers
-from .models import Movie, Director, Genre, Country, Workers
+from .models import Movie, Director, Genre, Country, Workers, Member
 import datetime
 
 
@@ -42,4 +42,10 @@ class WorkersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Workers
+        fields = '__all__'
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
         fields = '__all__'
