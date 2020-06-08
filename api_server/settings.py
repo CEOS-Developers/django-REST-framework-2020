@@ -23,8 +23,9 @@ SECRET_KEY = 'bqkbvbjk_32-hsy7o*r9=dc29^x4vt6y@*v$v-9n+qmu9wfsoa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ec2-52-79-57-105.ap-northeast-2.compute.amazonaws.com',]
 
+AUTH_USER_MODEL = 'api.User'
 
 # Application definition
 
@@ -36,8 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
-    'rest_framework'
+    'rest_framework',
+    'django_filters'
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,7 +86,7 @@ WSGI_APPLICATION = 'api_server.wsgi.application'
 # DB 세팅을 위해 수정해야 할 부분 (default가 sqlite3)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, 'secrets.json'), 'rb') as secret_file:
-    secrets = json.load(secret_file)
+     secrets = json.load(secret_file)
 
 
 # Password validation
@@ -112,9 +122,16 @@ USE_L10N = True
 USE_TZ = True
 
 DATABASES = secrets['DB_SETTINGS']
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'api.User'
