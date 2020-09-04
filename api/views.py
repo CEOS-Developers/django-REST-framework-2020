@@ -96,7 +96,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all().order_by("-date_ordered")
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
 
     # orders/today/   오늘 주문 들어온 상품 조회
     @action(methods=['get'], detail=False, url_path='today', url_name='today')
