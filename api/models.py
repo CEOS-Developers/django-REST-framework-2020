@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 # from django.utils.translation import ugettext_lazy as _   # 다국어 사이트를 위한 맞춤번역 (Form 과 admin) 나중에 적용
 from django.utils import timezone
+
+
 # from django.db.models.signals import post_save   # 오류 발생하여 사용하지 않음
 # from django.dispatch import receiver   # 오류 발생하여 사용하지 않음
 
@@ -21,10 +23,10 @@ class MyUser(models.Model):
         # (DB 저장값, admin 페이지 및 Form 표시값)
         ('male', '남성'),
         ('female', '여성'),
-        ('neither', '선택 안함'),   # 'do not specify'
+        ('neither', '선택 안함'),  # 'do not specify'
     )
-    gender = models.CharField('성별',  max_length=10, choices=GENDER, default='male')
-    date_joined = models.DateTimeField('가입일', default=timezone.now)   # auto_now_add=True 도 무방
+    gender = models.CharField('성별', max_length=10, choices=GENDER, default='male')
+    date_joined = models.DateTimeField('가입일', default=timezone.now)  # auto_now_add=True 도 무방
     address = models.CharField('주소', max_length=100)
     date_of_birth = models.DateField('생년월일', null=True, blank=True)
 
@@ -40,17 +42,17 @@ class MyUser(models.Model):
     )
 
     class Meta:
-        verbose_name = '유저'   # 모델 자체 이름
+        verbose_name = '유저'  # 모델 자체 이름
         # verbose_name 이 정의되어 있는 상태에서 verbose_name_plural 이 정의되지 않았으면, 자동으로 뒤에 s 하나를 붙여준다.
-        verbose_name_plural = '유저'   # 복수형
-        ordering = ('-date_joined',)   # 최신 가입순 
+        verbose_name_plural = '유저'  # 복수형
+        ordering = ('-date_joined',)  # 최신 가입순
 
     def __str__(self):
         return self.name
 
 
 class Product(models.Model):
-    pro_num = models.AutoField('상품번호 PK', primary_key=True)   # PK 별도로 지정
+    pro_num = models.AutoField('상품번호 PK', primary_key=True)  # PK 별도로 지정
     pro_name = models.CharField('상품명', max_length=100)
     inventory = models.IntegerField('재고량')
     price = models.IntegerField('단가')
@@ -74,7 +76,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = '상품'
         verbose_name_plural = '상품'
-        ordering = ('-supply_date',)   # 최신 공급순
+        ordering = ('-supply_date',)  # 최신 공급순
 
     def __str__(self):
         return self.pro_name
@@ -84,9 +86,9 @@ class Product(models.Model):
 class Order(models.Model):
     # PK 는 Meta 클래스를 참고
     myuser = models.ForeignKey(MyUser,
-                                on_delete=models.CASCADE,
-                                related_name='orders',
-                                verbose_name='유저')
+                               on_delete=models.CASCADE,
+                               related_name='orders',
+                               verbose_name='유저')
     product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE,
                                 related_name='orders',
@@ -102,7 +104,7 @@ class Order(models.Model):
     )
     '''
     destination = models.CharField('배송지', max_length=100)
-    date_ordered = models.DateTimeField('주문일자', default=timezone.now)   # editable=False 인자 불가
+    date_ordered = models.DateTimeField('주문일자', default=timezone.now)  # editable=False 인자 불가
     message = models.CharField('주문요청메시지', max_length=300, blank=True)
 
     class Meta:
@@ -116,7 +118,7 @@ class Order(models.Model):
 
 
 class Manufacturer(models.Model):
-    manu_num = models.AutoField('제조업체번호 PK', primary_key=True)   # PK 별도로 지정
+    manu_num = models.AutoField('제조업체번호 PK', primary_key=True)  # PK 별도로 지정
     manu_name = models.CharField('제조업체명', max_length=50)
     phone = models.CharField('전화번호', max_length=20)
     address = models.CharField('주소', max_length=100)
@@ -125,14 +127,14 @@ class Manufacturer(models.Model):
     class Meta:
         verbose_name = '제조업체'
         verbose_name_plural = '제조업체'
-        ordering = ('-manu_num',)   # 최신 등록순
+        ordering = ('-manu_num',)  # 최신 등록순
 
     def __str__(self):
         return self.manu_name
 
 
 class Delivery(models.Model):
-    delivery_num = models.AutoField('배송번호 PK', primary_key=True)   # PK 별도로 지정
+    delivery_num = models.AutoField('배송번호 PK', primary_key=True)  # PK 별도로 지정
     '''
     Order 테이블을 참조하기 위해선 Order 의 PK 를 가져오면 된다.
     Order 의 PK 는 두 개의 복합키(myuser, product)로 이루어져 있는데, 가져오는 방식은 아래처럼 단순하다. 
@@ -155,14 +157,14 @@ class Delivery(models.Model):
     class Meta:
         verbose_name = '배송'
         verbose_name_plural = '배송'
-        ordering = ('-transport',)   # 최신 운송장번호순
+        ordering = ('-transport',)  # 최신 운송장번호순
 
     def __str__(self):
         return self.delivery_num
 
 
 class Review(models.Model):
-    review_num = models.AutoField('글번호 PK', primary_key=True)   # PK 별도로 지정
+    review_num = models.AutoField('글번호 PK', primary_key=True)  # PK 별도로 지정
     myuser = models.ForeignKey('MyUser',
                                on_delete=models.CASCADE,
                                related_name='reviews',
@@ -175,14 +177,14 @@ class Review(models.Model):
                               verbose_name='주문식별')
     title = models.CharField('글제목', max_length=100, default='')
     # ImageField 사용시 필수인 이미지처리 라이브러리 pillow 를 설치한다
-    image = models.ImageField('글사진', blank=True)   # 썸네일 생성 생략
+    image = models.ImageField('글사진', blank=True)  # 썸네일 생성 생략
     content = models.TextField('글내용', default='')
     pub_date = models.DateTimeField('작성일자', default=timezone.now)
 
     class Meta:
         verbose_name = '리뷰'
         verbose_name_plural = '리뷰'
-        ordering = ('-review_num',)   # 최신 리뷰순
+        ordering = ('-review_num',)  # 최신 리뷰순
 
     def __str__(self):
         return '[{}] {}'.format(self.myuser.name, self.title)

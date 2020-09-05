@@ -275,6 +275,3 @@ user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 ```
 
 
-
-
-
